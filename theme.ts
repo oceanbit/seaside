@@ -1,6 +1,6 @@
 import {colors} from './colors';
 
-const theme = {
+export const theme = {
   on_primary_light: colors.white,
   primary_light: colors.blue['600'],
   on_surface_light: colors.navy['700'],
