@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/crutchcorn/seaside/compare/v0.0.3...v0.1.0) (2020-07-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* There is no more `theme` exported from seaside/theme.
+However, there is now a `lightTheme` and `darkTheme` exported from it
+
+### Features
+
+* added multiple design tokens (spacing, text, opacity, borders) ([34c6833](https://github.com/crutchcorn/seaside/commit/34c683356bc4642bfb39d2f0699446eb6a9889bf))
+
+
+* migrate light and dark themes to their own variables ([64eb746](https://github.com/crutchcorn/seaside/commit/64eb746488055c84ba546fb49359f3c7621db95d))
+
 ### [0.0.3](https://github.com/crutchcorn/seaside/compare/v0.0.2...v0.0.3) (2020-07-03)
 
 
