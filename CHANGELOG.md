@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/crutchcorn/seaside/compare/v0.1.0...v0.1.1) (2020-07-09)
+
+
+### Bug Fixes
+
+* fixed the color values of fullTheme to match tokens ([49630ed](https://github.com/crutchcorn/seaside/commit/49630edf8d8d24659382c16ef0a163eb054f2a99))
+
 ## [0.1.0](https://github.com/crutchcorn/seaside/compare/v0.0.3...v0.1.0) (2020-07-09)
 
 
