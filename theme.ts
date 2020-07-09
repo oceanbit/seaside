@@ -1,7 +1,18 @@
 import {color_tokens} from './color_tokens';
 import {colors} from './colors';
+import {textStyles} from './text_styles';
+import {spacing} from './spacing';
+import {opacity} from './opacity';
+import {borders} from './borders';
+import {borderRadius} from './border_radius';
 
-const baseTheme = {};
+const baseTheme = {
+  textStyles: textStyles,
+  spacing: spacing,
+  opacity: opacity,
+  borders: borders,
+  borderRadius: borderRadius,
+};
 
 export const lightTheme = {
   ...baseTheme,
