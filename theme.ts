@@ -71,7 +71,7 @@ export const darkTheme = {
 export const fullTheme = {
   ...baseTheme,
   colors: {
-    ...lightTheme.colors,
-    ...darkTheme.colors,
+    ...colors,
+    ...color_tokens,
   },
 };
