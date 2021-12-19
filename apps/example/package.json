@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "example",
+  "name": "@seaside/example",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -13,7 +13,7 @@
     "preact": "^10.3.1",
     "preact-render-to-string": "^5.1.4",
     "preact-router": "^3.2.1",
-    "ui": "*"
+    "@seaside/components": "*"
   },
   "devDependencies": {
     "preact-cli": "^3.0.0",

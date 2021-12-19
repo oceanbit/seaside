@@ -1,5 +1,5 @@
 {
-  "name": "tsconfig",
+  "name": "@seaside/tsconfig",
   "private": true,
   "version": "0.0.0",
   "main": "index.js",

@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/react-library.json",
+  "extends": "@seaside/tsconfig/react-library.json",
   "include": ["**/*.spec.ts"],
   "exclude": ["dist", "build", "node_modules"],
   "declaration": false,

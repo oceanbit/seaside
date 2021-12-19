@@ -1,8 +1,9 @@
 {
-  "extends": "tsconfig/preact.json",
+  "extends": "@seaside/tsconfig/react-library.json",
   "include": ["."],
   "exclude": ["dist", "build", "node_modules", "**/*.spec.tsx"],
+  "declaration": true,
   "compilerOptions": {
-    "moduleResolution": "node",
+    "moduleResolution": "node"
   }
 }

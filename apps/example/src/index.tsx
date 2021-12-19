@@ -1,5 +1,5 @@
 import {h} from 'preact';
-const {register} = require('ui/compat');
+const {register} = require('@seaside/components/compat');
 
 const App = () => {
     return <sea-button text="Hello"/>

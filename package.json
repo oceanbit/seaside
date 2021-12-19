@@ -1,5 +1,5 @@
 {
-  "name": "seaside-monorepo",
+  "name": "@seaside/monorepo-root",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
