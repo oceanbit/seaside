@@ -1,0 +1,10 @@
+{
+  "extends": "tsconfig/react-library.json",
+  "include": ["**/*.spec.ts"],
+  "exclude": ["dist", "build", "node_modules"],
+  "declaration": false,
+  "compilerOptions": {
+    "isolatedModules": false,
+    "moduleResolution": "node"
+  }
+}

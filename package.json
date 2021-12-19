@@ -10,7 +10,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "storybook": "turbo run storybook --scope=\"ui\"",
+    "storybook": "turbo run storybook --parallel",
+    "test": "turbo run test",
     "changelog": "changeset",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -28,6 +29,12 @@
           "dist/**",
           ".next/**"
         ]
+      },
+      "test": {
+        "outputs": []
+      },
+      "storybook": {
+        "outputs": []
       },
       "lint": {
         "outputs": []
