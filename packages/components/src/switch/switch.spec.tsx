@@ -3,12 +3,12 @@ import {render, fireEvent} from "@testing-library/react-native";
 import {useState} from "react";
 
 test('Should render enabled', () => {
-    const {getByTestId} = render(<Switch enabled={false} setEnabled={() => {}} disabled={false}/>)
+    const {getByTestId} = render(<Switch enabled={false} onToggle={() => {}} disabled={false}/>)
     expect(getByTestId("switch")).not.toBeDisabled();
 })
 
 test('Should render disabled', () => {
-    const {getByTestId} = render(<Switch enabled={false} setEnabled={() => {}} disabled={true}/>)
+    const {getByTestId} = render(<Switch enabled={false} onToggle={() => {}} disabled={true}/>)
     expect(getByTestId("switch")).toBeDisabled();
 })
 
@@ -16,7 +16,7 @@ test('Should toggle when enabled', () => {
     const DisabledSwitch = () => {
         const [enabled, setEnabled] = useState(false);
         return (
-            <Switch enabled={enabled} setEnabled={setEnabled} disabled={false}/>
+            <Switch enabled={enabled} onToggle={setEnabled} disabled={false}/>
         )
     }
 
@@ -38,7 +38,7 @@ test('Should not toggle when disabled', () => {
     const DisabledSwitch = () => {
         const [enabled, setEnabled] = useState(false);
         return (
-            <Switch enabled={enabled} setEnabled={setEnabled} disabled={true}/>
+            <Switch enabled={enabled} onToggle={setEnabled} disabled={true}/>
         )
     }
 
@@ -54,3 +54,5 @@ test('Should not toggle when disabled', () => {
         selected: false
     });
 })
+
+test.todo("Should toggle for web components")

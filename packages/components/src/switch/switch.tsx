@@ -2,17 +2,20 @@ import * as React from 'react';
 import {View, TouchableWithoutFeedback, Animated} from 'react-native';
 import {theme} from '../constants/theme';
 import {DynamicStyleSheet, useDynamicValue} from 'react-native-dynamic';
+import { useId } from "@reach/auto-id";
 
 export interface SeaSwitchProps {
     enabled: boolean;
     disabled?: boolean;
-    setEnabled: (val: boolean) => void;
+    onToggle?: (val: boolean) => void;
     label?: string;
 }
 
 const animTiming = 150;
 
-export const Switch = ({enabled, setEnabled, disabled, label}: SeaSwitchProps) => {
+export const Switch = ({enabled, onToggle, disabled, label}: SeaSwitchProps) => {
+    const _switchId = useId();
+    const switchId = React.useMemo(() => `seaswitch_${_switchId}`, [_switchId]);
     const styles = useDynamicValue(dynamicStyles);
 
     const primary = useDynamicValue<string>(theme.colors.primary);
@@ -69,6 +72,19 @@ export const Switch = ({enabled, setEnabled, disabled, label}: SeaSwitchProps) =
         }
     }, [switchLeft, enabled, switchPrimaryBG, thumbDisabled, disabled]);
 
+    const onPress = () => {
+        if (disabled) return;
+        if (onToggle && typeof onToggle === 'function') {
+            onToggle(!enabled);
+            return;
+        }
+        if (typeof window !== 'undefined') {
+            const toggle = new Event('toggle');
+            const el = document.querySelector("#" + switchId);
+            el && el.parentElement!.dispatchEvent(toggle);
+        }
+    }
+
     const trackBGColor = switchPrimaryBG.interpolate({
         // These interpolated values must be in this order, otherwise, when transitioning from "enabled" to "disabled",
         // the colors will flash in a weird/bad order
@@ -91,6 +107,7 @@ export const Switch = ({enabled, setEnabled, disabled, label}: SeaSwitchProps) =
     };
 
     return (
+        <View nativeID={switchId}>
         <TouchableWithoutFeedback
             accessibilityRole={'switch'}
             accessibilityState={{
@@ -99,7 +116,7 @@ export const Switch = ({enabled, setEnabled, disabled, label}: SeaSwitchProps) =
             }}
             testID={"switch"}
             {...(label ? {accessibilityLabel: label} : {})}
-            onPress={() => !disabled && setEnabled(!enabled)}
+            onPress={onPress}
         >
             <View style={styles.switchBox}>
                 <Animated.View style={[styles.switchTrack, switchTrackBG]}>
@@ -107,6 +124,7 @@ export const Switch = ({enabled, setEnabled, disabled, label}: SeaSwitchProps) =
                 </Animated.View>
             </View>
         </TouchableWithoutFeedback>
+        </View>
     );
 };
 

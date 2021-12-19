@@ -3,7 +3,7 @@ import {Switch} from './switch';
 
 const SeaSwitchDemo = ({...props}: any) => {
   const [value, setValue] = React.useState(false);
-  return <Switch enabled={value} setEnabled={setValue} {...props} />;
+  return <Switch enabled={value} onToggle={setValue} {...props} />;
 };
 
 export default {title: 'Seaside Components/Switch'};

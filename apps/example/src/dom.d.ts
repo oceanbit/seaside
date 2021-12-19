@@ -6,7 +6,7 @@ declare module 'preact/src/jsx' {
         // We're extending the IntrinsicElements interface which holds a kv-list of
         // available html-tags.
         interface IntrinsicElements {
-            'sea-switch': SeaSwitchProps;
+            'sea-switch': SeaSwitchProps & {key?: string};
         }
     }
 }
