@@ -1,51 +1,42 @@
 {
-  "name": "seaside",
-  "version": "0.1.1",
-  "description": "",
+  "name": "turborepo-basic-shared",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "lint": "eslint ./ -c .eslintrc.js --ext .js,.jsx,.ts,.tsx",
-    "format": "eslint ./ -c .eslintrc.js --fix --ext .js,.jsx,.ts,.tsx",
-    "release": "standard-version"
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/crutchcorn/seaside.git"
-  },
-  "keywords": [],
-  "author": "Corbin Crutchley <crutchcorn@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/crutchcorn/seaside/issues"
-  },
-  "homepage": "https://github.com/crutchcorn/seaside#readme",
   "devDependencies": {
-    "@commitlint/cli": "^9.0.1",
-    "@commitlint/config-conventional": "^9.0.1",
-    "@typescript-eslint/eslint-plugin": "^3.3.0",
-    "@typescript-eslint/parser": "^3.3.0",
-    "eslint": "^7.2.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "husky": "^4.2.3",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5",
-    "standard-version": "^8.0.0",
-    "typescript": "^3.8.3"
+    "prettier": "^2.5.1",
+    "turbo": "latest"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+  "turbo": {
+    "pipeline": {
+      "build": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "dist/**",
+          ".next/**"
+        ]
+      },
+      "lint": {
+        "outputs": []
+      },
+      "dev": {
+        "cache": false
+      }
     }
   },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "npm run format"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=14.0.0"
   }
 }
