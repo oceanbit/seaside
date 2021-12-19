@@ -4,6 +4,7 @@
   "exclude": ["dist", "build", "node_modules", "**/*.spec.tsx"],
   "declaration": true,
   "compilerOptions": {
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "resolveJsonModule": true
   }
 }

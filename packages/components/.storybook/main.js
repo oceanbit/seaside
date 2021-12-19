@@ -7,4 +7,5 @@ module.exports = {
     builder: "webpack5",
   },
   typescript: { reactDocgen: false },
+  staticDirs: ['./public']
 };

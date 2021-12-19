@@ -5,6 +5,7 @@
   "declaration": false,
   "compilerOptions": {
     "isolatedModules": false,
+    "resolveJsonModule": true,
     "moduleResolution": "node",
     "types": ["jest", "@testing-library/jest-native"]
   }
