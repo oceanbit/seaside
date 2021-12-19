@@ -27,14 +27,14 @@
         ],
         "outputs": [
           "dist/**",
-          ".next/**"
+          "build/**"
         ]
       },
       "test": {
         "outputs": []
       },
       "storybook": {
-        "outputs": []
+        "cache": false
       },
       "lint": {
         "outputs": []
