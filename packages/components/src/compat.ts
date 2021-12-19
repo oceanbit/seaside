@@ -4,5 +4,5 @@ import * as ui from './index';
 export * from './index';
 
 export function register() {
-    registerPreact(ui.Button, "sea-button", ['text']);
+    registerPreact(ui.Switch, "sea-switch", ui.SwitchWatchedAttributes);
 }
