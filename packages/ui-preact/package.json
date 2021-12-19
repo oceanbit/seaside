@@ -1,0 +1,22 @@
+{
+  "name": "ui-compat",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "@types/preact-custom-element": "^4.0.1",
+    "preact": "^10.6.4",
+    "react-native-web": "^0.17.5",
+    "preact-custom-element": "^4.2.1",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "typescript": "^4.5.4",
+    "ts-loader": "^9.2.6",
+    "ui": "*",
+    "tsconfig": "*"
+  }
+}
