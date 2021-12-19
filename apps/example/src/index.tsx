@@ -1,5 +1,5 @@
 import {h} from 'preact';
-import {register} from 'ui-compat';
+const {register} = require('ui/compat');
 
 const App = () => {
     return <sea-button text="Hello"/>

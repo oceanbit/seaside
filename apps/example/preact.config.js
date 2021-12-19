@@ -8,15 +8,5 @@
  * @param {Record<string, unknown>} options - this is mainly relevant for plugins (will always be empty in the config), default to an empty object
  */
 export default (config, env, helpers, options) => {
-    config.resolve.alias = {
-        ...config.resolve.alias,
-        "react-native$": "react-native-web/dist/index.js",
-        // Use Preact aliases
-        react$: 'preact/compat',
-        'react-dom$': 'preact/compat',
-        // Fix the responder system which react-native-web depends on
-        'react-dom/unstable-native-dependencies$': 'preact-responder-event-plugin',
-    };
-
     return config;
 };

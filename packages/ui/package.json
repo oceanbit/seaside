@@ -1,12 +1,17 @@
 {
   "name": "ui",
   "version": "0.0.0",
-  "main": "./index.tsx",
-  "types": "./index.tsx",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "license": "MIT",
+  "scripts": {
+    "dev": "webpack --mode=development",
+    "build": "webpack --mode=production"
+  },
   "peerDependencies": {
-    "react-native": "^0.66.4",
-    "react": "^17.0.2"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-native": "^0.66.4"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -14,14 +19,31 @@
     },
     "react-native": {
       "optional": true
+    },
+    "react-dom": {
+      "optional": true
     }
   },
   "devDependencies": {
-    "react-native": "^0.66.4",
-    "react": "^17.0.2",
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-flow": "^7.16.5",
+    "@types/preact-custom-element": "^4.0.1",
     "@types/react": "^17.0.37",
     "@types/react-native": "^0.66.9",
+    "babel-loader": "^8.2.3",
+    "copy-webpack-plugin": "^10.2.0",
+    "preact": "^10.6.4",
+    "preact-custom-element": "^4.2.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-native": "^0.66.4",
+    "react-native-web": "^0.17.5",
+    "ts-loader": "^9.2.6",
     "tsconfig": "*",
-    "typescript": "^4.5.3"
+    "typescript": "^4.5.3",
+    "ui": "*",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
   }
 }

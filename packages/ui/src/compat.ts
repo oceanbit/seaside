@@ -1,8 +1,8 @@
 import registerPreact from 'preact-custom-element';
 
-export * from 'ui/index';
-import * as ui from 'ui/index';
+import * as ui from './index';
+export * from './index';
 
-export const register = () => {
+export function register() {
     registerPreact(ui.Button, "sea-button", ['text']);
 }
