@@ -1,3 +1,5 @@
+import {Button as RNButton} from "react-native";
+
 export const Button = () => {
-  return <button>Boop</button>;
+  return <RNButton title={"Hello, world!"}/>;
 };
