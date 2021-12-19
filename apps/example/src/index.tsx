@@ -1,8 +1,10 @@
 import {h} from 'preact';
-import {Button} from 'ui';
+import {register} from 'ui-compat';
 
 const App = () => {
-    return <Button />
+    return <sea-button text="Hello"/>
 }
+
+typeof window !== 'undefined' && register();
 
 export default App;
