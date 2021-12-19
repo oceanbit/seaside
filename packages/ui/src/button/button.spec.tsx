@@ -1,4 +1,4 @@
-import {Button} from "./Button";
+import {Button} from "./button";
 import {render} from "@testing-library/react-native";
 
 test('Should show props', () => {
