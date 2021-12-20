@@ -2,6 +2,10 @@
   "name": "seaside-tokens",
   "version": "0.0.0",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint *.{js,jsx,ts,tsx}",
+    "format": "eslint *.{js,jsx,ts,tsx} --fix"
+  },
   "devDependencies": {
     "@seaside/tsconfig": "*"
   }

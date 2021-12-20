@@ -10,12 +10,14 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
+    "format": "turbo run format",
     "storybook": "turbo run storybook --parallel",
     "test": "turbo run test",
-    "changelog": "changeset",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "changelog": "changeset"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.19.0",
+    "eslint": "^7.32.0",
     "prettier": "^2.5.1",
     "turbo": "latest"
   },
@@ -36,6 +38,9 @@
       "storybook": {
         "cache": false
       },
+      "format": {
+        "cache": false
+      },
       "lint": {
         "outputs": []
       },
@@ -47,8 +52,5 @@
   "engines": {
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
-  },
-  "dependencies": {
-    "@changesets/cli": "^2.19.0"
   }
 }

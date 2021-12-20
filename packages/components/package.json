@@ -8,7 +8,9 @@
     "dev": "webpack --mode=development",
     "build": "webpack --mode=production",
     "test": "jest",
-    "storybook": "start-storybook -p 6007"
+    "storybook": "start-storybook -p 6007",
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
+    "format": "eslint src/**/*.{js,jsx,ts,tsx} --fix"
   },
   "files": [
     "*.d.ts",

@@ -4,11 +4,16 @@
   "version": "0.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint *.{js,jsx,ts,tsx}",
+    "format": "eslint *.{js,jsx,ts,tsx} --fix"
+  },
   "files": [
     "eslint-preset.js"
   ],
   "dependencies": {
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-app": "^7.0.0",
-    "eslint-config-prettier": "^8.3.0"
+    "eslint-plugin-prettier": "^4.0.0"
   }
 }
