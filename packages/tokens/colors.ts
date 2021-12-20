@@ -157,7 +157,7 @@ export const colors = {
     900: 'hsla(32,50%,25%,1)',
   },
 
-  white: '#FFF',
-  black: '#000',
+  white: 'hsla(0,0%,100%,1)',
+  black: 'hsla(0,0%,0%,1)',
 };
 

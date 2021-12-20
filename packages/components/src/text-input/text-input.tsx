@@ -36,13 +36,11 @@ export const TextInput = ({
   const styles = useDynamicValue(dynamicStyles);
 
   const primary = useDynamicValue(theme.colors.primary);
-  // label_high_emphasis
-  const label_high_emphasis = useDynamicValue(theme.colors.label_medium_emphasis_no_opacity);
+  const label_high_emphasis = useDynamicValue(theme.colors.label_high_emphasis);
 
-  const tint_on_surface_02 = useDynamicValue(theme.colors.tint_on_surface_08);
-  const tint_on_surface_01 = useDynamicValue(theme.colors.tint_on_surface_16);
-  // label_low_emphasis
-  const label_low_emphasis = useDynamicValue(theme.colors.label_medium_emphasis_no_opacity);
+  const disabled_background_color = useDynamicValue(theme.colors.tint_neutral_02);
+  const disabled_border_color = useDynamicValue(theme.colors.tint_neutral_01);
+  const label_low_emphasis = useDynamicValue(theme.colors.label_low_emphasis);
 
   const [coloredBgOpacity] = React.useState(new Animated.Value(0));
   const [labelTextToken] = React.useState(new Animated.Value(1));
@@ -186,7 +184,7 @@ export const TextInput = ({
 
   const grayBorderColor = disabledToken.interpolate({
     inputRange: [0, 1],
-    outputRange: [label_high_emphasis, tint_on_surface_01],
+    outputRange: [label_high_emphasis, disabled_border_color],
   });
 
   const greyBorderStyle = {
@@ -207,7 +205,7 @@ export const TextInput = ({
 
   const disabledBG = disabledToken.interpolate({
     inputRange: [0, 1],
-    outputRange: ['transparent', tint_on_surface_02],
+    outputRange: ['transparent', disabled_background_color],
   });
 
   const labelTextStyles = {
@@ -308,15 +306,14 @@ const dynamicStyles = new DynamicStyleSheet({
     flexGrow: 1,
     padding: theme.spacing.xs,
     ...theme.textStyles.body_01,
-    // label_high_emphasis
-    color: theme.colors.label_medium_emphasis_no_opacity
+    color: theme.colors.label_high_emphasis
   },
   blueBackground: {
     position: 'absolute',
     bottom: 0,
     width: '100%',
     left: 0,
-    backgroundColor: theme.colors.tint_primary_20,
+    backgroundColor: theme.colors.tint_primary_01,
     borderRadius: theme.borderRadius.regular,
   },
   greyBorderContainer: {

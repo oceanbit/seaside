@@ -19,31 +19,15 @@ export const Switch = ({enabled, onToggle, disabled, label}: SeaSwitchProps) => 
     const styles = useDynamicValue(dynamicStyles);
 
     const primary = useDynamicValue<string>(theme.colors.primary);
-    const tint_on_surface_16 = useDynamicValue<string>(theme.colors.tint_on_surface_16);
-    const tint_on_surface_08 = useDynamicValue<string>(theme.colors.tint_on_surface_08);
-    const ripple_surface = useDynamicValue<string>(theme.colors.ripple_surface);
+    const off_background = useDynamicValue<string>(theme.colors.tint_neutral_01);
+    const disabled_background = useDynamicValue<string>(theme.colors.tint_neutral_02);
 
     const [switchLeft] = React.useState(new Animated.Value(0));
-    const [thumbDisabled] = React.useState(new Animated.Value(0));
 
     const [switchPrimaryBG] = React.useState(new Animated.Value(0));
 
     React.useEffect(() => {
-        if (disabled) {
-            Animated.timing(thumbDisabled, {
-                toValue: 1,
-                duration: animTiming,
-                useNativeDriver: true,
-            }).start();
-        } else {
-            Animated.timing(thumbDisabled, {
-                toValue: 0,
-                duration: animTiming,
-                useNativeDriver: true,
-            }).start();
-        }
-
-        if (enabled) {
+       if (enabled) {
             Animated.parallel([
                 Animated.timing(switchLeft, {
                     toValue: theme.spacing.m + theme.spacing.xxs, // Width of switch
@@ -70,7 +54,7 @@ export const Switch = ({enabled, onToggle, disabled, label}: SeaSwitchProps) => 
                 }),
             ]).start();
         }
-    }, [switchLeft, enabled, switchPrimaryBG, thumbDisabled, disabled]);
+    }, [switchLeft, enabled, switchPrimaryBG, disabled]);
 
     const onPress = () => {
         if (disabled) return;
@@ -89,17 +73,11 @@ export const Switch = ({enabled, onToggle, disabled, label}: SeaSwitchProps) => 
         // These interpolated values must be in this order, otherwise, when transitioning from "enabled" to "disabled",
         // the colors will flash in a weird/bad order
         inputRange: [0, 1, 2],
-        outputRange: [tint_on_surface_08, tint_on_surface_16, primary],
-    });
-
-    const thumbBGColor = thumbDisabled.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['white', ripple_surface],
+        outputRange: [disabled_background, off_background, primary],
     });
 
     const thumbAnim = {
         left: switchLeft,
-        backgroundColor: thumbBGColor,
     };
 
     const switchTrackBG = {
@@ -141,7 +119,7 @@ const dynamicStyles = new DynamicStyleSheet({
         width: theme.spacing.m * 2,
         height: theme.spacing.m,
         position: 'relative',
-        backgroundColor: theme.colors.tint_on_surface_16,
+        backgroundColor: theme.colors.tint_neutral_02,
         boxSizing: 'content-box',
         borderRadius: theme.spacing.m,
     },
@@ -152,5 +130,6 @@ const dynamicStyles = new DynamicStyleSheet({
         left: theme.spacing.xxs,
         top: theme.spacing.xxs,
         borderRadius: theme.spacing.m,
+        backgroundColor: theme.colors.white
     },
 });
