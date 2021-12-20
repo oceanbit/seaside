@@ -12,6 +12,13 @@
       outline: none !important;
   }
 </style>
+<script>
+    if (localStorage.getItem('allowed') !== 'true') {
+        const sponsorPass = prompt("Please input GitHub sponsor code");
+        if (sponsorPass !== "WhyHelloThere") window.href = "https://google.com";
+        localStorage.setItem("allowed", "true");
+    }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
