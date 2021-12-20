@@ -3,6 +3,7 @@ import {View, TouchableWithoutFeedback, Animated} from 'react-native';
 import {theme} from '../constants/theme';
 import {DynamicStyleSheet, useDynamicValue} from 'react-native-dynamic';
 import { useId } from "@reach/auto-id";
+import {colors} from "seaside-tokens/colors";
 
 export interface SeaSwitchProps {
     enabled: boolean;
@@ -21,12 +22,28 @@ export const Switch = ({enabled, onToggle, disabled, label}: SeaSwitchProps) => 
     const primary = useDynamicValue<string>(theme.colors.primary);
     const off_background = useDynamicValue<string>(theme.colors.tint_neutral_01);
     const disabled_background = useDynamicValue<string>(theme.colors.tint_neutral_02);
+    const thumb_disabled_background = useDynamicValue<string>(theme.colors.tint_neutral_02);
 
     const [switchLeft] = React.useState(new Animated.Value(0));
+    const [thumbDisabled] = React.useState(new Animated.Value(0));
 
     const [switchPrimaryBG] = React.useState(new Animated.Value(0));
 
     React.useEffect(() => {
+        if (disabled) {
+            Animated.timing(thumbDisabled, {
+                toValue: 1,
+                duration: animTiming,
+                useNativeDriver: true,
+            }).start();
+        } else {
+            Animated.timing(thumbDisabled, {
+                toValue: 0,
+                duration: animTiming,
+                useNativeDriver: true,
+            }).start();
+        }
+
        if (enabled) {
             Animated.parallel([
                 Animated.timing(switchLeft, {
@@ -54,7 +71,13 @@ export const Switch = ({enabled, onToggle, disabled, label}: SeaSwitchProps) => 
                 }),
             ]).start();
         }
-    }, [switchLeft, enabled, switchPrimaryBG, disabled]);
+    }, [switchLeft, enabled, switchPrimaryBG, thumbDisabled, disabled]);
+
+
+    const thumbBGColor = thumbDisabled.interpolate({
+        inputRange: [0, 1],
+        outputRange: [colors.white, thumb_disabled_background],
+    });
 
     const onPress = () => {
         if (disabled) return;
@@ -78,6 +101,7 @@ export const Switch = ({enabled, onToggle, disabled, label}: SeaSwitchProps) => 
 
     const thumbAnim = {
         left: switchLeft,
+        backgroundColor: thumbBGColor,
     };
 
     const switchTrackBG = {
@@ -129,7 +153,6 @@ const dynamicStyles = new DynamicStyleSheet({
         height: theme.spacing.m,
         left: theme.spacing.xxs,
         top: theme.spacing.xxs,
-        borderRadius: theme.spacing.m,
-        backgroundColor: theme.colors.white
+        borderRadius: theme.spacing.m
     },
 });
