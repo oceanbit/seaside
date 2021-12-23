@@ -114,6 +114,7 @@ export const Switch = ({
         disabled: disabled,
         selected: enabled,
       }}
+      disabled={disabled}
       idPrepend={"seaswitch_"}
       testID={"switch"}
       eventFunction={onToggle}

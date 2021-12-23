@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-(yarn git-branch-is main && yarn build && yarn test) || true
+if yarn git-branch-is main; then
+    yarn build && yarn test
+fi
