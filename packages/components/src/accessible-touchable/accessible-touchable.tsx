@@ -8,6 +8,7 @@ import { ComponentProps, useMemo, useState, FC, useCallback } from "react";
 import { useId } from "@reach/auto-id";
 import { useIsomorphicLayoutEffect as useLayoutEffect } from "../utils/use-isomorphic-layout-effect";
 import { canUseDOM } from "../utils/can-use-dom";
+import { pick } from "ts-util-helpers/dist/objects/pick";
 
 interface CheckEventProps {
   eventName: string;
@@ -41,9 +42,12 @@ interface AccessibleTouchableBaseProps {
   eventName: string;
   eventFunction: Function | undefined;
   idPrepend: string;
-  focusStyle: UpstreamTouchableProps["style"];
+  focusedStyle: UpstreamTouchableProps["style"];
   pressedStyle: UpstreamTouchableProps["style"];
-  webStyle: WebStyle;
+  // Styling only for the web, using normal CSS properties
+  webStyle?: WebStyle;
+  focusedWebStyle?: WebStyle;
+  pressedWebStyle?: WebStyle;
 }
 
 type AccessibleTouchableProps = AccessibleTouchableBaseProps &
@@ -56,9 +60,11 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   idPrepend,
   onPress: propOnPress,
   style,
-  focusStyle,
+  focusedStyle,
   pressedStyle,
   webStyle,
+  focusedWebStyle,
+  pressedWebStyle,
   ...viewProps
 }) => {
   const _viewId = useId();
@@ -75,11 +81,42 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   const mergedStyle = useMemo(
     () => ({
       ...((style || {}) as ViewStyle),
-      ...(((focused && focusStyle) || {}) as ViewStyle),
+      ...(((focused && focusedStyle) || {}) as ViewStyle),
       ...(((pressed && pressedStyle) || {}) as ViewStyle),
     }),
-    [pressedStyle, focusStyle, style, focused, pressed]
+    [pressedStyle, focusedStyle, style, focused, pressed]
   );
+
+  const [beforePressedWebStyle, setBeforePressedWebStyle] = useState<
+    null | string
+  >(null);
+  const [beforeFocusedWebStyle, setBeforeFocusedWebStyle] = useState<
+    null | string
+  >(null);
+
+  useLayoutEffect(() => {
+    const el = document.querySelector<HTMLElement>("#" + viewId);
+    if (!el || !focusedWebStyle) return;
+    if (focused && !beforeFocusedWebStyle) {
+      setBeforeFocusedWebStyle(el.style.cssText);
+      Object.assign(el.style, focusedWebStyle);
+    } else if (!focused && beforeFocusedWebStyle) {
+      el.style.cssText = beforeFocusedWebStyle;
+      setBeforeFocusedWebStyle(null);
+    }
+  }, [beforeFocusedWebStyle, focused, focusedWebStyle]);
+
+  useLayoutEffect(() => {
+    const el = document.querySelector<HTMLElement>("#" + viewId);
+    if (!el || !pressedWebStyle) return;
+    if (pressed && !beforePressedWebStyle) {
+      setBeforePressedWebStyle(el.style.cssText);
+      Object.assign(el.style, pressedWebStyle);
+    } else if (!pressed && beforePressedWebStyle) {
+      el.style.cssText = beforePressedWebStyle;
+      setBeforePressedWebStyle(null);
+    }
+  }, [beforePressedWebStyle, pressed, pressedWebStyle]);
 
   const onPress = useCallback(
     (e: GestureResponderEvent) => {
@@ -99,19 +136,7 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
     if (canUseDOM()) {
       const el = document.querySelector<HTMLElement>("#" + viewId);
       if (!el) return;
-      for (const key of Object.keys(webStyle)) {
-        // Hush little TypeScript, don't you cry
-        // Corbin's gonna code you a lullaby
-        //
-        // ...
-        //
-        // For all the webStyle's keys and all the key's values
-        // could all be assigned to el.style again
-        //
-        // Goodnight, sweet code.
-        const keyLocal: "color" = key as never;
-        el.style[keyLocal] = webStyle[keyLocal]!;
-      }
+      Object.assign(el.style, webStyle);
       function onPressLocal(e: KeyboardEvent) {
         if (e.code === "Space") {
           e.preventDefault();
