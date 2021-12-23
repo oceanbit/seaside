@@ -4,7 +4,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { ComponentProps, useMemo, useState, FC } from "react";
+import { ComponentProps, useMemo, useState, FC, useCallback } from "react";
 import { useId } from "@reach/auto-id";
 import { useIsomorphicLayoutEffect as useLayoutEffect } from "../utils/use-isomorphic-layout-effect";
 import { canUseDOM } from "../utils/can-use-dom";
@@ -81,6 +81,20 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
     [pressedStyle, focusStyle, style, focused, pressed]
   );
 
+  const onPress = useCallback(
+    (e: GestureResponderEvent) => {
+      if (!propOnPress) return;
+      if (viewProps.disabled) return;
+      checkEvent({
+        eventName,
+        eventFunction,
+        viewId,
+        eventFunctionCallback: () => propOnPress(e),
+      });
+    },
+    [propOnPress, eventName, eventFunction, viewId, viewProps.disabled]
+  );
+
   useLayoutEffect(() => {
     if (canUseDOM()) {
       const el = document.querySelector<HTMLElement>("#" + viewId);
@@ -98,19 +112,16 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
         const keyLocal: "color" = key as never;
         el.style[keyLocal] = webStyle[keyLocal]!;
       }
+      function onPressLocal(e: KeyboardEvent) {
+        if (e.code === "Space") {
+          e.preventDefault();
+          onPress(e as any);
+        }
+      }
+      el.addEventListener("keydown", onPressLocal);
+      return () => el.removeEventListener("keydown", onPressLocal);
     }
-  }, [viewId, webStyle]);
-
-  const onPress = (e: GestureResponderEvent) => {
-    if (!propOnPress) return;
-    if (viewProps.disabled) return;
-    checkEvent({
-      eventName,
-      eventFunction,
-      viewId,
-      eventFunctionCallback: () => propOnPress(e),
-    });
-  };
+  }, [viewId, webStyle, onPress]);
 
   return (
     <View nativeID={viewId}>
