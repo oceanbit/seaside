@@ -2,37 +2,37 @@ interface FontBase {
   fontFamily: string;
   // This matches the typings for `react-native` and should work for web as well
   fontWeight:
-    | 'normal'
-    | 'bold'
-    | '100'
-    | '200'
-    | '300'
-    | '400'
-    | '500'
-    | '600'
-    | '700'
-    | '800'
-    | '900';
+    | "normal"
+    | "bold"
+    | "100"
+    | "200"
+    | "300"
+    | "400"
+    | "500"
+    | "600"
+    | "700"
+    | "800"
+    | "900";
 }
 
 export const rubikLightBase = {
-  fontFamily: 'Rubik',
-  fontWeight: '300' as const,
+  fontFamily: "Rubik",
+  fontWeight: "300" as const,
 };
 
 export const rubikRegularBase = {
-  fontFamily: 'Rubik',
-  fontWeight: 'normal' as const,
+  fontFamily: "Rubik",
+  fontWeight: "normal" as const,
 };
 
 export const rubikMediumBase = {
-  fontFamily: 'Rubik',
-  fontWeight: '500' as const,
+  fontFamily: "Rubik",
+  fontWeight: "500" as const,
 };
 
 export const rubikBoldBase = {
-  fontFamily: 'Rubik',
-  fontWeight: 'bold' as const,
+  fontFamily: "Rubik",
+  fontWeight: "bold" as const,
 };
 
 export const getTextStyles = (props?: {

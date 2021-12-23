@@ -1,10 +1,10 @@
-import {color_tokens} from './color_tokens';
-import {colors} from './colors';
-import {textStyles} from './text_styles';
-import {spacing} from './spacing';
-import {opacity} from './opacity';
-import {borders} from './borders';
-import {borderRadius} from './border_radius';
+import { color_tokens } from "./color_tokens";
+import { colors } from "./colors";
+import { textStyles } from "./text_styles";
+import { spacing } from "./spacing";
+import { opacity } from "./opacity";
+import { borders } from "./borders";
+import { borderRadius } from "./border_radius";
 
 const baseTheme = {
   textStyles: textStyles,

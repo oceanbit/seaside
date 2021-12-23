@@ -1,24 +1,24 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
   TextProps,
   View,
   Animated,
-} from 'react-native';
-import {theme} from '../constants/theme';
-import {DynamicStyleSheet, useDynamicValue} from 'react-native-dynamic';
-import {useId} from "@reach/auto-id";
-import {useEffect} from "react";
+} from "react-native";
+import { theme } from "../constants/theme";
+import { DynamicStyleSheet, useDynamicValue } from "react-native-dynamic";
+import { useId } from "@reach/auto-id";
+import { useEffect } from "react";
 // import {SharkIconButton} from '../shark-icon-button';
 
 export interface TextInputProps {
-  ellipsizeMode?: TextProps['ellipsizeMode'];
-  value: RNTextInputProps['value'];
-  onChangeText: RNTextInputProps['onChangeText'];
+  ellipsizeMode?: TextProps["ellipsizeMode"];
+  value: RNTextInputProps["value"];
+  onChangeText: RNTextInputProps["onChangeText"];
   disabled?: boolean;
   errorStr?: string;
-  keyboardType?: RNTextInputProps['keyboardType'];
+  keyboardType?: RNTextInputProps["keyboardType"];
   endIcon?: string;
 }
 
@@ -38,7 +38,9 @@ export const TextInput = ({
   const primary = useDynamicValue(theme.colors.primary);
   const label_high_emphasis = useDynamicValue(theme.colors.label_high_emphasis);
 
-  const disabled_background_color = useDynamicValue(theme.colors.tint_neutral_02);
+  const disabled_background_color = useDynamicValue(
+    theme.colors.tint_neutral_02
+  );
   const disabled_border_color = useDynamicValue(theme.colors.tint_neutral_01);
   const label_low_emphasis = useDynamicValue(theme.colors.label_low_emphasis);
 
@@ -55,7 +57,6 @@ export const TextInput = ({
 
   const _textId = useId();
   const textId = React.useMemo(() => `seatext_internal_${_textId}`, [_textId]);
-
 
   React.useEffect(() => {
     if (disabled) {
@@ -170,12 +171,12 @@ export const TextInput = ({
 
   useEffect(() => {
     // Remove `outline` styling on browser
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const el = document.querySelector("#" + textId) as HTMLElement;
       if (!el) return;
-      el.style.outline = 'none'
+      el.style.outline = "none";
     }
-  }, [textId])
+  }, [textId]);
 
   const coloredBackgroundStyle = {
     opacity: coloredBgOpacity,
@@ -205,7 +206,7 @@ export const TextInput = ({
 
   const disabledBG = disabledToken.interpolate({
     inputRange: [0, 1],
-    outputRange: ['transparent', disabled_background_color],
+    outputRange: ["transparent", disabled_background_color],
   });
 
   const labelTextStyles = {
@@ -219,7 +220,7 @@ export const TextInput = ({
   };
 
   const inputStylingWithIcon = !!endIcon
-    ? {paddingRight: theme.spacing.xxs}
+    ? { paddingRight: theme.spacing.xxs }
     : {};
 
   const disabledBackground = {
@@ -230,10 +231,11 @@ export const TextInput = ({
     <>
       <View
         style={styles.inputLabelContainer}
-        onLayout={event => {
-          const {height: eventHeight} = event.nativeEvent.layout;
+        onLayout={(event) => {
+          const { height: eventHeight } = event.nativeEvent.layout;
           setLabelInputContHeight(eventHeight);
-        }}>
+        }}
+      >
         <Animated.View style={labelContainer}>
           <Animated.Text style={[styles.label, labelTextStyles]}>
             Label
@@ -241,15 +243,16 @@ export const TextInput = ({
         </Animated.View>
         <Animated.View
           style={[styles.textInpContainer, disabledBackground]}
-          onLayout={event => {
-            const {height: eventHeight} = event.nativeEvent.layout;
+          onLayout={(event) => {
+            const { height: eventHeight } = event.nativeEvent.layout;
             setInputHeight(eventHeight);
-          }}>
+          }}
+        >
           <RNTextInput
             nativeID={textId}
             value={value}
             onChangeText={onChangeText}
-            placeholder={''}
+            placeholder={""}
             style={[styles.textInput, inputStylingWithIcon]}
             numberOfLines={1}
             multiline={false}
@@ -287,49 +290,49 @@ export const TextInput = ({
 
 const dynamicStyles = new DynamicStyleSheet({
   inputLabelContainer: {
-    position: 'relative',
+    position: "relative",
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: "transparent",
   },
   label: {
     // Overline 2
     ...theme.textStyles.overline,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   textInpContainer: {
     padding: theme.spacing.xxs,
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     borderRadius: theme.borderRadius.regular,
   },
   textInput: {
     flexGrow: 1,
     padding: theme.spacing.xs,
     ...theme.textStyles.body_01,
-    color: theme.colors.label_high_emphasis
+    color: theme.colors.label_high_emphasis,
   },
   blueBackground: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    width: '100%',
+    width: "100%",
     left: 0,
     backgroundColor: theme.colors.tint_primary_01,
     borderRadius: theme.borderRadius.regular,
   },
   greyBorderContainer: {
-    position: 'absolute',
+    position: "absolute",
     borderWidth: theme.borders.normal,
-    width: '100%',
+    width: "100%",
     bottom: 0,
     left: 0,
     borderRadius: theme.borderRadius.regular,
     zIndex: 1,
   },
   blueBorder: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
-    width: '100%',
+    width: "100%",
     // Arbitary height in order to enforce border-radius
     height: 100,
     borderBottomWidth: theme.borders.thick,

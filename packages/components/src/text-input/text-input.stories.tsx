@@ -1,22 +1,22 @@
-import React from 'react';
-import {TextInput} from './text-input';
+import React from "react";
+import { TextInput } from "./text-input";
 
-const SeaInputDemo = ({...props}: any) => {
-  const [value, setValue] = React.useState('');
+const SeaInputDemo = ({ ...props }: any) => {
+  const [value, setValue] = React.useState("");
   return (
     <TextInput
       value={value}
       onChangeText={setValue}
-      endIcon={'copy'}
+      endIcon={"copy"}
       {...props}
     />
   );
 };
 
-export default {title: 'Seaside Components/Text Input'};
+export default { title: "Seaside Components/Text Input" };
 
-export const DefaultStyling = (args: {disabled: boolean}) => (
+export const DefaultStyling = (args: { disabled: boolean }) => (
   <SeaInputDemo {...args} />
 );
 
-DefaultStyling.args = {disabled: false};
+DefaultStyling.args = { disabled: false };

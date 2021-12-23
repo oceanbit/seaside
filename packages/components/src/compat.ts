@@ -1,8 +1,8 @@
-import registerPreact from 'preact-custom-element';
+import registerPreact from "preact-custom-element";
 
-import * as ui from './index';
-export * from './index';
+import * as ui from "./index";
+export * from "./index";
 
 export function register() {
-    registerPreact(ui.Switch, "sea-switch", ui.SwitchWatchedAttributes);
+  registerPreact(ui.Switch, "sea-switch", ui.SwitchWatchedAttributes);
 }
