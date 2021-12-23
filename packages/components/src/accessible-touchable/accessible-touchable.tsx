@@ -2,9 +2,12 @@ import {
   GestureResponderEvent,
   TouchableWithoutFeedback,
   View,
+  ViewStyle,
 } from "react-native";
 import { ComponentProps, useMemo, useState, FC } from "react";
 import { useId } from "@reach/auto-id";
+import { useIsomorphicLayoutEffect as useLayoutEffect } from "../utils/use-isomorphic-layout-effect";
+import { canUseDOM } from "../utils/can-use-dom";
 
 interface CheckEventProps {
   eventName: string;
@@ -23,24 +26,28 @@ export function checkEvent({
     eventFunctionCallback();
     return;
   }
-  if (typeof window !== "undefined") {
+  if (canUseDOM()) {
     const toggle = new Event(eventName);
     const el = document.querySelector("#" + viewId);
     el && el.parentElement!.dispatchEvent(toggle);
   }
 }
 
+type UpstreamTouchableProps = ComponentProps<typeof TouchableWithoutFeedback>;
+
+export type WebStyle = Readonly<Partial<HTMLElement["style"]>>;
+
 interface AccessibleTouchableBaseProps {
   eventName: string;
   eventFunction: Function | undefined;
   idPrepend: string;
+  focusStyle: UpstreamTouchableProps["style"];
+  pressedStyle: UpstreamTouchableProps["style"];
+  webStyle: WebStyle;
 }
 
 type AccessibleTouchableProps = AccessibleTouchableBaseProps &
-  Omit<
-    ComponentProps<typeof TouchableWithoutFeedback>,
-    "onPressIn" | "onPressOut"
-  >;
+  Omit<UpstreamTouchableProps, "onPressIn" | "onPressOut">;
 
 export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   children,
@@ -48,6 +55,10 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   eventFunction,
   idPrepend,
   onPress: propOnPress,
+  style,
+  focusStyle,
+  pressedStyle,
+  webStyle,
   ...viewProps
 }) => {
   const _viewId = useId();
@@ -57,9 +68,38 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   const onPressIn = () => setPressed(true);
   const onPressOut = () => setPressed(false);
 
-  const [focus, setFocused] = useState(false);
+  const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
+
+  const mergedStyle = useMemo(
+    () => ({
+      ...((style || {}) as ViewStyle),
+      ...(((focused && focusStyle) || {}) as ViewStyle),
+      ...(((pressed && pressedStyle) || {}) as ViewStyle),
+    }),
+    [pressedStyle, focusStyle, style, focused, pressed]
+  );
+
+  useLayoutEffect(() => {
+    if (canUseDOM()) {
+      const el = document.querySelector<HTMLElement>("#" + viewId);
+      if (!el) return;
+      for (const key of Object.keys(webStyle)) {
+        // Hush little TypeScript, don't you cry
+        // Corbin's gonna code you a lullaby
+        //
+        // ...
+        //
+        // For all the webStyle's keys and all the key's values
+        // could all be assigned to el.style again
+        //
+        // Goodnight, sweet code.
+        const keyLocal: "color" = key as never;
+        el.style[keyLocal] = webStyle[keyLocal]!;
+      }
+    }
+  }, [viewId, webStyle]);
 
   const onPress = (e: GestureResponderEvent) => {
     if (!propOnPress) return;
@@ -78,6 +118,9 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
         onPress={onPress}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        style={mergedStyle}
         {...viewProps}
       >
         {children}

@@ -119,14 +119,16 @@ export const Switch = ({
       testID={"switch"}
       eventFunction={onToggle}
       eventName={"toggle"}
-      {...(label ? { accessibilityLabel: label } : {})}
       onPress={onPress}
+      style={styles.switchBox}
+      focusStyle={{}}
+      pressedStyle={{}}
+      webStyle={{ cursor: "pointer", display: "inline-block" }}
+      {...(label ? { accessibilityLabel: label } : {})}
     >
-      <View style={styles.switchBox}>
-        <Animated.View style={[styles.switchTrack, switchTrackBG]}>
-          <Animated.View style={[styles.switchThumb, thumbAnim]} />
-        </Animated.View>
-      </View>
+      <Animated.View style={[styles.switchTrack, switchTrackBG]}>
+        <Animated.View style={[styles.switchThumb, thumbAnim]} />
+      </Animated.View>
     </AccessibleTouchable>
   );
 };
@@ -141,7 +143,6 @@ const dynamicStyles = new DynamicStyleSheet({
   switchBox: {
     paddingHorizontal: theme.spacing.xxs,
     paddingVertical: theme.spacing.s,
-    cursor: "pointer",
   },
   switchTrack: {
     padding: theme.spacing.xxs,
