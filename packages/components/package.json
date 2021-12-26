@@ -2,11 +2,6 @@
   "name": "@seaside/components",
   "version": "0.0.0",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
-    },
     "./react": {
       "types": "./dist/index.d.ts",
       "import": "./dist/react.js",
@@ -16,6 +11,17 @@
       "types": "./dist/compat.d.ts",
       "import": "./dist/compat.js",
       "require": "./dist/compat.js"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "react": ["dist/index.d.ts"],
+      "compat": ["dist/compat.d.ts"]
     }
   },
   "main": "./dist/index.js",
