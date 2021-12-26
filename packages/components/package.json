@@ -1,6 +1,23 @@
 {
   "name": "@seaside/components",
   "version": "0.0.0",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/react.js"
+    },
+    "./compat": {
+      "types": "./dist/compat.d.ts",
+      "import": "./dist/compat.js",
+      "require": "./dist/compat.js"
+    }
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",

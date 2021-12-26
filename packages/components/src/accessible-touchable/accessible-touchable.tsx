@@ -103,7 +103,7 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
       el.style.cssText = beforeFocusedWebStyle;
       setBeforeFocusedWebStyle(null);
     }
-  }, [beforeFocusedWebStyle, focused, focusedWebStyle]);
+  }, [beforeFocusedWebStyle, focused, focusedWebStyle, viewId]);
 
   useLayoutEffect(() => {
     const el = document.querySelector<HTMLElement>("#" + viewId);
@@ -115,7 +115,7 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
       el.style.cssText = beforePressedWebStyle;
       setBeforePressedWebStyle(null);
     }
-  }, [beforePressedWebStyle, pressed, pressedWebStyle]);
+  }, [beforePressedWebStyle, pressed, pressedWebStyle, viewId]);
 
   const onPress = useCallback(
     (e: GestureResponderEvent) => {

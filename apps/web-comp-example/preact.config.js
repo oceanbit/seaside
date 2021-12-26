@@ -8,5 +8,8 @@
  * @param {Record<string, unknown>} options - this is mainly relevant for plugins (will always be empty in the config), default to an empty object
  */
 export default (config, env, helpers, options) => {
-    return config;
+  // It seems like Preact CLI doesn't support the "export" option, so we have to do it manually
+  config.resolve.alias["@seaside/components/compat"] =
+    "@seaside/components/dist/compat";
+  return config;
 };

@@ -1,10 +1,8 @@
 import * as React from "react";
-import { View, TouchableWithoutFeedback, Animated } from "react-native";
+import { Animated } from "react-native";
 import { theme } from "../constants/theme";
 import { DynamicStyleSheet, useDynamicValue } from "react-native-dynamic";
-import { useId } from "@reach/auto-id";
 import { colors } from "seaside-tokens/colors";
-import { useState } from "react";
 import { AccessibleTouchable } from "../accessible-touchable";
 
 export interface SeaSwitchProps {
