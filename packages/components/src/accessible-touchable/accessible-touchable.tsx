@@ -8,7 +8,6 @@ import { ComponentProps, useMemo, useState, FC, useCallback } from "react";
 import { useId } from "@reach/auto-id";
 import { useIsomorphicLayoutEffect as useLayoutEffect } from "../utils/use-isomorphic-layout-effect";
 import { canUseDOM } from "../utils/can-use-dom";
-import { pick } from "ts-util-helpers/dist/objects/pick";
 
 interface CheckEventProps {
   eventName: string;
