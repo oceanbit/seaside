@@ -60,10 +60,38 @@ module.exports = [
     name: "seaside-react",
     entry: "./src/index.tsx",
     externals: {
-      react: "react",
-      "react-dom": "react-dom",
+      react: {
+        root: "React",
+        commonjs2: "react",
+        commonjs: "react",
+        amd: "react",
+        umd: "react",
+      },
+      "prop-types": {
+        root: "PropTypes",
+        commonjs: "prop-types",
+        commonjs2: "prop-types",
+      },
+      "react-dom": {
+        root: "ReactDOM",
+        commonjs2: "react-dom",
+        commonjs: "react-dom",
+        amd: "react-dom",
+        umd: "react-dom",
+      },
+      "react-dom/server": {
+        root: "ReactDOMServer",
+        commonjs: "react-dom/server",
+        commonjs2: "react-dom/server",
+      },
     },
     module: {
+      noParse: [
+        require.resolve("react"),
+        require.resolve("prop-types"),
+        require.resolve("react-dom"),
+        require.resolve("react-dom/server"),
+      ],
       rules: [
         {
           test: /\.tsx?$/,
@@ -81,6 +109,7 @@ module.exports = [
     output: {
       filename: "react.js",
       path: path.resolve(__dirname, "dist"),
+      libraryTarget: "commonjs",
     },
   },
   {
