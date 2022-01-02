@@ -1,6 +1,7 @@
 import { useIsomorphicLayoutEffect as useLayoutEffect } from "../utils/use-isomorphic-layout-effect";
 import { useState } from "react";
 import { WebStyle } from "./shared";
+import { canUseDOM } from "../utils/can-use-dom";
 
 interface UseConditionalCssProps {
   webStyle?: WebStyle;
@@ -15,6 +16,7 @@ export const useWebStyling = ({ webStyle, viewId }: UseConditionalCssProps) => {
   const [beforeWebStyle, setBeforeWebStyle] = useState<null | string>(null);
 
   useLayoutEffect(() => {
+    if (!canUseDOM()) return;
     const el = document.querySelector<HTMLElement>("#" + viewId);
     if (!el || !webStyle) return;
     if (condition && !beforeWebStyle) {
