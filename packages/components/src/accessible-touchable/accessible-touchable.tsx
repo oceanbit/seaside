@@ -4,10 +4,11 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { ComponentProps, useMemo, useState, FC, useCallback } from "react";
+import { ComponentProps, useMemo, FC, useCallback } from "react";
 import { useId } from "@reach/auto-id";
 import { useIsomorphicLayoutEffect as useLayoutEffect } from "../utils/use-isomorphic-layout-effect";
 import { canUseDOM } from "../utils/can-use-dom";
+import { useWebStyling } from "./use-web-styling";
 
 interface CheckEventProps {
   eventName: string;
@@ -69,13 +70,15 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   const _viewId = useId();
   const viewId = useMemo(() => `${idPrepend}${_viewId}`, [idPrepend, _viewId]);
 
-  const [pressed, setPressed] = useState(false);
-  const onPressIn = () => setPressed(true);
-  const onPressOut = () => setPressed(false);
+  const [pressed, onPressIn, onPressOut] = useWebStyling({
+    webStyle: pressedWebStyle,
+    viewId,
+  });
 
-  const [focused, setFocused] = useState(false);
-  const onFocus = () => setFocused(true);
-  const onBlur = () => setFocused(false);
+  const [focused, onFocus, onBlur] = useWebStyling({
+    webStyle: focusedWebStyle,
+    viewId,
+  });
 
   const mergedStyle = useMemo(
     () => ({
@@ -85,37 +88,6 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
     }),
     [pressedStyle, focusedStyle, style, focused, pressed]
   );
-
-  const [beforePressedWebStyle, setBeforePressedWebStyle] = useState<
-    null | string
-  >(null);
-  const [beforeFocusedWebStyle, setBeforeFocusedWebStyle] = useState<
-    null | string
-  >(null);
-
-  useLayoutEffect(() => {
-    const el = document.querySelector<HTMLElement>("#" + viewId);
-    if (!el || !focusedWebStyle) return;
-    if (focused && !beforeFocusedWebStyle) {
-      setBeforeFocusedWebStyle(el.style.cssText);
-      Object.assign(el.style, focusedWebStyle);
-    } else if (!focused && beforeFocusedWebStyle) {
-      el.style.cssText = beforeFocusedWebStyle;
-      setBeforeFocusedWebStyle(null);
-    }
-  }, [beforeFocusedWebStyle, focused, focusedWebStyle, viewId]);
-
-  useLayoutEffect(() => {
-    const el = document.querySelector<HTMLElement>("#" + viewId);
-    if (!el || !pressedWebStyle) return;
-    if (pressed && !beforePressedWebStyle) {
-      setBeforePressedWebStyle(el.style.cssText);
-      Object.assign(el.style, pressedWebStyle);
-    } else if (!pressed && beforePressedWebStyle) {
-      el.style.cssText = beforePressedWebStyle;
-      setBeforePressedWebStyle(null);
-    }
-  }, [beforePressedWebStyle, pressed, pressedWebStyle, viewId]);
 
   const onPress = useCallback(
     (e: GestureResponderEvent) => {
