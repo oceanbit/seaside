@@ -1,8 +1,3 @@
-// TODO: Replace with `useId` hook from @reach/auto-id
-export function generateId(): string {
-  return "_" + Math.random().toString(36).substr(2, 9);
-}
-
 export const getMousePosition = function (mouseEvent: MouseEvent) {
   let pos = { x: 0, y: 0 };
   if (mouseEvent.pageX || mouseEvent.pageY) {

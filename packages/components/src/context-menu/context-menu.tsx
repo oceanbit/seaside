@@ -1,16 +1,21 @@
 /**
  * This component was originally based off of
  * @see https://github.com/shaggyrec/react-aim-menu/tree/5de4c709495439e2418baa1f320252e6ec33c05b
+ * And then ported to React Native for Web, using native React Native APIs.
  */
-import React, { forwardRef, createContext, useRef, useState } from "react";
-import type { HTMLAttributes, ReactNode, Ref } from "react";
+import React, { createContext, useRef, useState, useMemo } from "react";
+import type { ReactNode } from "react";
 import {
   getMousePosition,
   getRectangle,
   getTriangleZone,
   isInsideTriangle,
 } from "./functions";
-import { useForkRef } from "../utils/use-fork-ref";
+import { View, ViewProps } from "react-native";
+import { useId } from "@reach/auto-id";
+import { useIsomorphicLayoutEffect as useLayoutEffect } from "../utils/use-isomorphic-layout-effect";
+import { canUseDOM } from "../utils/can-use-dom";
+import { ContextMenuItem } from "./context-menu-item";
 
 interface State {
   pendingExpand: {
@@ -58,19 +63,21 @@ const MOUSE_HISTORY_SIZE = 3;
 
 export const MenuContext = createContext(defaultState);
 
-type MenuProps = {
+type ContextMenuProps = {
+  idPrepend: string;
   hoverDelay?: number;
   children: ReactNode;
-} & HTMLAttributes<HTMLDivElement>;
+} & ViewProps;
 
-export const Menu = forwardRef(function Menu(
-  { hoverDelay = DEFAULT_HOVER_DELAY, ...props }: MenuProps,
-  ref: Ref<HTMLDivElement>
-) {
+export const ContextMenu = ({
+  idPrepend,
+  hoverDelay = DEFAULT_HOVER_DELAY,
+  ...props
+}: ContextMenuProps) => {
   const menuRef = useRef(null);
-  const forkedRef = useForkRef(ref as never, menuRef);
 
-  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  const _viewId = useId();
+  const viewId = useMemo(() => `${idPrepend}${_viewId}`, [idPrepend, _viewId]);
 
   function updateExpand(): void {
     if (!state.pendingExpand || expandedItem === state.pendingExpand.item) {
@@ -100,32 +107,50 @@ export const Menu = forwardRef(function Menu(
     };
   }
 
-  function onMouseMove(event: React.MouseEvent<HTMLDivElement>): void {
-    props.onMouseMove && props.onMouseMove(event);
-    state.mouseHistory.push(getMousePosition(event.nativeEvent));
+  function onMouseMove(event: MouseEvent): void {
+    state.mouseHistory.push(getMousePosition(event));
     if (state.mouseHistory.length > MOUSE_HISTORY_SIZE) {
       state.mouseHistory.shift();
     }
   }
 
-  function handleMenuLeave(event: React.MouseEvent<HTMLDivElement>): void {
-    props.onMouseLeave && props.onMouseLeave(event);
+  function handleMenuLeave(event: MouseEvent): void {
     clearPendingExpand();
     setExpandedItem(null);
   }
+
+  useLayoutEffect(() => {
+    if (!canUseDOM()) {
+      console.warn(
+        "The ContextMenu component only currently works in the browser"
+      );
+      console.warn();
+      console.warn("Please see the following issue for support in RNW and RNM");
+      console.warn(
+        "https://github.com/microsoft/react-native-windows/issues/9454"
+      );
+      return;
+    }
+    const el = document.querySelector<HTMLElement>("#" + viewId);
+    if (!el) return;
+
+    el.addEventListener("mouseleave", handleMenuLeave);
+    el.addEventListener("mousemove", onMouseMove);
+    return () => {
+      el.removeEventListener("mouseleave", handleMenuLeave);
+      el.removeEventListener("mousemove", onMouseMove);
+    };
+  }, [viewId]);
+
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
   return (
     <MenuContext.Provider
       value={{ onItemEnter, onItemLeave, expandedItem: expandedItem! }}
     >
-      <div
-        {...props}
-        ref={forkedRef}
-        onMouseLeave={handleMenuLeave}
-        onMouseMove={onMouseMove}
-      >
+      <View {...props} nativeID={viewId}>
         {props.children}
-      </div>
+      </View>
     </MenuContext.Provider>
   );
-});
+};
