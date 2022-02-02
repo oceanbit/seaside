@@ -41,14 +41,6 @@ export const ContextMenuItem = ({
     }
   }, [menu.expandedItem]);
 
-  function handleMouseEnter(event: MouseEvent): void {
-    menu.onItemEnter?.(viewId!);
-  }
-
-  function handleMouseLeave(event: MouseEvent): void {
-    menu.onItemLeave?.();
-  }
-
   useLayoutEffect(() => {
     if (!canUseDOM()) {
       console.warn(
@@ -64,13 +56,21 @@ export const ContextMenuItem = ({
     const el = document.querySelector<HTMLElement>("#" + viewId);
     if (!el) return;
 
+    function handleMouseEnter(event: MouseEvent): void {
+      menu.onItemEnter?.(viewId!);
+    }
+
+    function handleMouseLeave(event: MouseEvent): void {
+      menu.onItemLeave?.();
+    }
+
     el.addEventListener("mouseenter", handleMouseEnter);
     el.addEventListener("mouseleave", handleMouseLeave);
     return () => {
       el.removeEventListener("mouseenter", handleMouseEnter);
       el.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [viewId]);
+  }, [viewId, menu.onItemEnter, menu.onItemLeave]);
 
   return (
     <View {...props} nativeID={viewId}>

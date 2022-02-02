@@ -67,17 +67,19 @@ type ContextMenuProps = {
   idPrepend: string;
   hoverDelay?: number;
   children: ReactNode;
+  onLeave?: () => any;
 } & ViewProps;
 
 export const ContextMenu = ({
   idPrepend,
   hoverDelay = DEFAULT_HOVER_DELAY,
+  onLeave,
   ...props
 }: ContextMenuProps) => {
-  const menuRef = useRef(null);
-
   const _viewId = useId();
   const viewId = useMemo(() => `${idPrepend}${_viewId}`, [idPrepend, _viewId]);
+
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
   function updateExpand(): void {
     if (!state.pendingExpand || expandedItem === state.pendingExpand.item) {
@@ -89,9 +91,12 @@ export const ContextMenu = ({
   }
 
   function onItemEnter(item: string): void {
+    if (!canUseDOM()) return;
+    const el = document.querySelector<HTMLElement>("#" + viewId);
+    if (!el) return;
     clearPendingExpand();
     state.pendingExpand = { item };
-    if (!expandedItem || !checkAim(menuRef.current!)) {
+    if (!expandedItem || !checkAim(el)) {
       return updateExpand();
     }
     state.pendingExpand.timeoutId = setTimeout(
@@ -105,18 +110,6 @@ export const ContextMenu = ({
       item: null,
       timeoutId: setTimeout(() => updateExpand(), hoverDelay + 100),
     };
-  }
-
-  function onMouseMove(event: MouseEvent): void {
-    state.mouseHistory.push(getMousePosition(event));
-    if (state.mouseHistory.length > MOUSE_HISTORY_SIZE) {
-      state.mouseHistory.shift();
-    }
-  }
-
-  function handleMenuLeave(event: MouseEvent): void {
-    clearPendingExpand();
-    setExpandedItem(null);
   }
 
   useLayoutEffect(() => {
@@ -134,15 +127,26 @@ export const ContextMenu = ({
     const el = document.querySelector<HTMLElement>("#" + viewId);
     if (!el) return;
 
+    function handleMenuLeave(): void {
+      onLeave?.();
+      clearPendingExpand();
+      setExpandedItem(null);
+    }
+
+    function onMouseMove(event: MouseEvent): void {
+      state.mouseHistory.push(getMousePosition(event));
+      if (state.mouseHistory.length > MOUSE_HISTORY_SIZE) {
+        state.mouseHistory.shift();
+      }
+    }
+
     el.addEventListener("mouseleave", handleMenuLeave);
     el.addEventListener("mousemove", onMouseMove);
     return () => {
       el.removeEventListener("mouseleave", handleMenuLeave);
       el.removeEventListener("mousemove", onMouseMove);
     };
-  }, [viewId]);
-
-  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  }, [viewId, onLeave]);
 
   return (
     <MenuContext.Provider

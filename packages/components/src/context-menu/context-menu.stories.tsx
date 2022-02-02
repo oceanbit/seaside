@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ContextMenu, ContextMenuItem } from "./index";
-import { StyleProp, View, ViewStyle } from "react-native";
+import { StyleProp, Text, View, ViewStyle } from "react-native";
 
 const items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -18,7 +18,7 @@ function renderSubmenus(active: number | null) {
         { backgroundColor: generateBg() },
       ]}
     >
-      submenu{i}
+      <Text>submenu{i}</Text>
     </View>
   ));
 }
@@ -31,20 +31,29 @@ const SeaSwitchDemo = ({ ...props }: any) => {
   }
 
   function renderMenuItems() {
-    return items.map((i) => (
+    return items.map((i, ii, arr) => (
       <ContextMenuItem
         idPrepend={"testing-menu"}
         key={i}
         onHover={() => setActiveElement(i)}
-        style={reactAimMenuItem}
+        style={[
+          reactAimMenuItem,
+          i === active ? reactAimMenuItemActive : {},
+          ii === 0 ? reactAimMenuItemFirst : {},
+          ii === arr.length - 1 ? reactAimMenuItemLast : {},
+        ]}
       >
-        item{i}
+        <Text>item{i}</Text>
       </ContextMenuItem>
     ));
   }
 
   return (
-    <ContextMenu idPrepend={"testing"} style={reactAimMenuStyle}>
+    <ContextMenu
+      idPrepend={"testing"}
+      style={reactAimMenuStyle}
+      onLeave={() => setActiveElement(null)}
+    >
       {renderMenuItems()}
       {renderSubmenus(active)}
     </ContextMenu>
@@ -52,8 +61,26 @@ const SeaSwitchDemo = ({ ...props }: any) => {
 };
 
 const reactAimMenuStyle: StyleProp<ViewStyle> = {
+  marginTop: 20,
   width: 200,
+  borderRadius: 16,
   position: "relative",
+  ...({ boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" } as {}),
+};
+
+const reactAimMenuItemFirst: StyleProp<ViewStyle> = {
+  borderTopWidth: 1,
+  borderTopLeftRadius: 16,
+  borderTopRightRadius: 16,
+};
+
+const reactAimMenuItemLast: StyleProp<ViewStyle> = {
+  borderBottomLeftRadius: 16,
+  borderBottomRightRadius: 16,
+};
+
+const reactAimMenuItemActive: StyleProp<ViewStyle> = {
+  backgroundColor: "#f0f0f0",
 };
 
 const reactAimMenuItem: StyleProp<ViewStyle> = {
@@ -81,12 +108,11 @@ const reactAimMenuSubmenu: StyleProp<ViewStyle> = {
   borderStyle: "solid",
   borderColor: "#000",
   // color: '#fff',
-  minHeight: "100vh",
   // textShadow: 1px 1px 1px rgba(0,0,0,.5),
 };
 
 const reactAimMenuSubmenuActive: StyleProp<ViewStyle> = {
-  display: "flex",
+  display: "block" as any,
 };
 
 export default { title: "Seaside Components/Context Menu" };
