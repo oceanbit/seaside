@@ -1,0 +1,11 @@
+test.todo("Should handle merging Stylesheet.create and object styles");
+test.todo("Should show hover styling when hovered");
+test.todo("Should show focus styling when focused");
+test.todo("Should show pressed styling when pressed");
+test.todo("Should show web styles on web");
+test.todo("Should emit onPress event");
+test.todo("Should not emit onPress event when disabled");
+test.todo("Should reset to baseline once focused");
+test.todo("Should reset to baseline once hovered");
+test.todo("Should reset to baseline once pressed");
+test.todo("Should reset to baseline once focused, hovered, and pressed");
