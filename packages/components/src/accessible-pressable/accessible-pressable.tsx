@@ -67,6 +67,7 @@ export const AccessiblePressable: FC<AccessibleTouchableProps> = ({
   focusedStyle,
   pressedStyle,
   hoveredStyle,
+  accessibilityRole = "button",
   ...pressableProps
 }) => {
   const _pressableId = useId();
@@ -143,6 +144,7 @@ export const AccessiblePressable: FC<AccessibleTouchableProps> = ({
       onBlur={onBlur}
       style={mergedStyle}
       nativeID={pressableId}
+      accessibilityRole={accessibilityRole}
     >
       {children}
     </Pressable>
