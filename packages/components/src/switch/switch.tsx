@@ -121,9 +121,11 @@ export const Switch = ({
       style={styles.switchBox}
       focusedStyle={{}}
       pressedStyle={{}}
+      hoveredStyle={{}}
       webStyle={{ cursor: "pointer", display: "inline-block" }}
       focusedWebStyle={{}}
       pressedWebStyle={{}}
+      hoveredWebStyle={{}}
       {...(label ? { accessibilityLabel: label } : {})}
     >
       <Animated.View style={[styles.switchTrack, switchTrackBG]}>

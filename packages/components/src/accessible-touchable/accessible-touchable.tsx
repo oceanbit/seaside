@@ -44,10 +44,12 @@ interface AccessibleTouchableBaseProps {
   idPrepend: string;
   focusedStyle: UpstreamTouchableProps["style"];
   pressedStyle: UpstreamTouchableProps["style"];
+  hoveredStyle: UpstreamTouchableProps["style"];
   // Styling only for the web, using normal CSS properties
   webStyle?: WebStyle;
   focusedWebStyle?: WebStyle;
   pressedWebStyle?: WebStyle;
+  hoveredWebStyle?: WebStyle;
 }
 
 type AccessibleTouchableProps = AccessibleTouchableBaseProps &
@@ -62,9 +64,11 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   style,
   focusedStyle,
   pressedStyle,
+  hoveredStyle,
   webStyle,
   focusedWebStyle,
   pressedWebStyle,
+  hoveredWebStyle,
   ...viewProps
 }) => {
   const _viewId = useId();
@@ -80,13 +84,19 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
     viewId,
   });
 
+  const [hovered, onMouseEnter, onMouseLeave] = useWebStyling({
+    webStyle: hoveredWebStyle,
+    viewId,
+  });
+
   const mergedStyle = useMemo(
-    () => ({
-      ...((style || {}) as ViewStyle),
-      ...(((focused && focusedStyle) || {}) as ViewStyle),
-      ...(((pressed && pressedStyle) || {}) as ViewStyle),
-    }),
-    [pressedStyle, focusedStyle, style, focused, pressed]
+    () => [
+      style ? style : {},
+      focused ? focusedStyle : {},
+      pressed ? pressedStyle : {},
+      hovered ? hoveredStyle : {},
+    ],
+    [style, focused, focusedStyle, pressed, pressedStyle, hovered, hoveredStyle]
   );
 
   const onPress = useCallback(
@@ -119,16 +129,23 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
     }
   }, [viewId, webStyle, onPress]);
 
+  // Not supported by React Native, but is supported by both RNWs;
+  const hoverProps = {
+    onMouseEnter,
+    onMouseLeave,
+  } as {};
+
   return (
     <View nativeID={viewId}>
       <Pressable
+        {...viewProps}
+        {...hoverProps}
         onPress={onPress}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
         onFocus={onFocus}
         onBlur={onBlur}
         style={mergedStyle}
-        {...viewProps}
       >
         {children}
       </Pressable>
