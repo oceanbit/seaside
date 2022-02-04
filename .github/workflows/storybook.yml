@@ -26,7 +26,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build Storybook
-        run: yarn storybook-build
+        run: yarn build-storybook
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
