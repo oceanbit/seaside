@@ -2,13 +2,11 @@ import {
   GestureResponderEvent,
   Pressable,
   TouchableWithoutFeedback,
-  View,
 } from "react-native";
-import { ComponentProps, useMemo, FC, useCallback } from "react";
+import { ComponentProps, useMemo, FC, useCallback, useState } from "react";
 import { useId } from "@reach/auto-id";
 import { useIsomorphicLayoutEffect as useLayoutEffect } from "../utils/use-isomorphic-layout-effect";
 import { canUseDOM } from "../utils/can-use-dom";
-import { useWebStyling } from "./use-web-styling";
 
 interface CheckEventProps {
   eventName: string;
@@ -36,8 +34,6 @@ export function checkEvent({
 
 type UpstreamTouchableProps = ComponentProps<typeof TouchableWithoutFeedback>;
 
-export type WebStyle = Readonly<Partial<HTMLElement["style"]>>;
-
 interface AccessibleTouchableBaseProps {
   eventName: string;
   eventFunction: Function | undefined;
@@ -45,15 +41,18 @@ interface AccessibleTouchableBaseProps {
   focusedStyle: UpstreamTouchableProps["style"];
   pressedStyle: UpstreamTouchableProps["style"];
   hoveredStyle: UpstreamTouchableProps["style"];
-  // Styling only for the web, using normal CSS properties
-  webStyle?: WebStyle;
-  focusedWebStyle?: WebStyle;
-  pressedWebStyle?: WebStyle;
-  hoveredWebStyle?: WebStyle;
 }
 
 type AccessibleTouchableProps = AccessibleTouchableBaseProps &
   Omit<UpstreamTouchableProps, "onPressIn" | "onPressOut">;
+
+export const useCondition = (initial: boolean) => {
+  const [condition, setCondition] = useState(initial);
+  const onActivate = () => setCondition(true);
+  const onDeactivate = () => setCondition(false);
+
+  return [condition, onActivate, onDeactivate] as const;
+};
 
 export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   children,
@@ -65,36 +64,23 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   focusedStyle,
   pressedStyle,
   hoveredStyle,
-  webStyle,
-  focusedWebStyle,
-  pressedWebStyle,
-  hoveredWebStyle,
   ...viewProps
 }) => {
   const _viewId = useId();
   const viewId = useMemo(() => `${idPrepend}${_viewId}`, [idPrepend, _viewId]);
 
-  const [pressed, onPressIn, onPressOut] = useWebStyling({
-    webStyle: pressedWebStyle,
-    viewId,
-  });
+  const [pressed, onPressIn, onPressOut] = useCondition(false);
 
-  const [focused, onFocus, onBlur] = useWebStyling({
-    webStyle: focusedWebStyle,
-    viewId,
-  });
+  const [focused, onFocus, onBlur] = useCondition(false);
 
-  const [hovered, onMouseEnter, onMouseLeave] = useWebStyling({
-    webStyle: hoveredWebStyle,
-    viewId,
-  });
+  const [hovered, onMouseEnter, onMouseLeave] = useCondition(false);
 
   const mergedStyle = useMemo(
     () => [
       style ? style : {},
+      hovered ? hoveredStyle : {},
       focused ? focusedStyle : {},
       pressed ? pressedStyle : {},
-      hovered ? hoveredStyle : {},
     ],
     [style, focused, focusedStyle, pressed, pressedStyle, hovered, hoveredStyle]
   );
@@ -117,7 +103,6 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
     if (canUseDOM()) {
       const el = document.querySelector<HTMLElement>("#" + viewId);
       if (!el) return;
-      Object.assign(el.style, webStyle);
       function onPressLocal(e: KeyboardEvent) {
         if (e.code === "Space") {
           e.preventDefault();
@@ -127,7 +112,7 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
       el.addEventListener("keydown", onPressLocal);
       return () => el.removeEventListener("keydown", onPressLocal);
     }
-  }, [viewId, webStyle, onPress]);
+  }, [viewId, onPress]);
 
   // Not supported by React Native, but is supported by both RNWs;
   const hoverProps = {
@@ -136,19 +121,18 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   } as {};
 
   return (
-    <View nativeID={viewId}>
-      <Pressable
-        {...viewProps}
-        {...hoverProps}
-        onPress={onPress}
-        onPressIn={onPressIn}
-        onPressOut={onPressOut}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        style={mergedStyle}
-      >
-        {children}
-      </Pressable>
-    </View>
+    <Pressable
+      {...viewProps}
+      {...hoverProps}
+      onPress={onPress}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      style={mergedStyle}
+      nativeID={viewId}
+    >
+      {children}
+    </Pressable>
   );
 };

@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Animated } from "react-native";
+import { Animated, Platform } from "react-native";
 import { theme } from "../constants/theme";
 import { DynamicStyleSheet, useDynamicValue } from "react-native-dynamic";
 import { colors } from "@seaside/tokens/colors";
 import { AccessibleTouchable } from "../accessible-touchable";
+import { WebStyle } from "../types/shared";
 
 export interface SeaSwitchProps {
   enabled: boolean;
@@ -122,10 +123,6 @@ export const Switch = ({
       focusedStyle={{}}
       pressedStyle={{}}
       hoveredStyle={{}}
-      webStyle={{ cursor: "pointer", display: "inline-block" }}
-      focusedWebStyle={{}}
-      pressedWebStyle={{}}
-      hoveredWebStyle={{}}
       {...(label ? { accessibilityLabel: label } : {})}
     >
       <Animated.View style={[styles.switchTrack, switchTrackBG]}>
@@ -145,6 +142,12 @@ const dynamicStyles = new DynamicStyleSheet({
   switchBox: {
     paddingHorizontal: theme.spacing.xxs,
     paddingVertical: theme.spacing.s,
+    ...Platform.select({
+      web: {
+        display: "inline-block",
+        cursor: "pointer",
+      } as WebStyle as {},
+    }),
   },
   switchTrack: {
     padding: theme.spacing.xxs,
