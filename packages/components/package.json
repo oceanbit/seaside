@@ -45,7 +45,7 @@
     "@reach/auto-id": "^0.16.0",
     "react-native-dynamic": "^1.0.0",
     "react-native-vector-icons": "^9.0.0",
-    "seaside-tokens": "*"
+    "@seaside/tokens": "*"
   },
   "peerDependencies": {
     "react": "^17.0.2",

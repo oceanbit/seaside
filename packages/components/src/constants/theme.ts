@@ -2,7 +2,7 @@ import {
   lightTheme as lightSeaside,
   darkTheme as darkSeaside,
   fullTheme,
-} from "seaside-tokens/theme";
+} from "@seaside/tokens/theme";
 import { DynamicValue } from "react-native-dynamic";
 import { textStyles } from "./text-styles";
 

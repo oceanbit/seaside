@@ -2,7 +2,7 @@ import * as React from "react";
 import { Animated } from "react-native";
 import { theme } from "../constants/theme";
 import { DynamicStyleSheet, useDynamicValue } from "react-native-dynamic";
-import { colors } from "seaside-tokens/colors";
+import { colors } from "@seaside/tokens/colors";
 import { AccessibleTouchable } from "../accessible-touchable";
 
 export interface SeaSwitchProps {
