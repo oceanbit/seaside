@@ -14,6 +14,8 @@
     "storybook": "turbo run storybook --parallel",
     "test": "turbo run test",
     "changelog": "changeset",
+    "version": "changeset version",
+    "doRelease": "changeset publish",
     "prepare": "husky install"
   },
   "devDependencies": {
