@@ -12,6 +12,7 @@
     "lint": "turbo run lint",
     "format": "turbo run format",
     "storybook": "turbo run storybook --parallel",
+    "build-storybook": "turbo run build-storybook",
     "test": "turbo run test",
     "changelog": "changeset",
     "version": "changeset version",
