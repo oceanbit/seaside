@@ -3,7 +3,7 @@ import { Animated, Platform } from "react-native";
 import { theme } from "../constants/theme";
 import { DynamicStyleSheet, useDynamicValue } from "react-native-dynamic";
 import { colors } from "@seaside/tokens/colors";
-import { AccessibleTouchable } from "../accessible-touchable";
+import { AccessiblePressable } from "../accessible-pressable";
 import { WebStyle } from "../types/shared";
 
 export interface SeaSwitchProps {
@@ -107,7 +107,7 @@ export const Switch = ({
   };
 
   return (
-    <AccessibleTouchable
+    <AccessiblePressable
       accessibilityRole={"switch"}
       accessibilityState={{
         disabled: disabled,
@@ -128,7 +128,7 @@ export const Switch = ({
       <Animated.View style={[styles.switchTrack, switchTrackBG]}>
         <Animated.View style={[styles.switchThumb, thumbAnim]} />
       </Animated.View>
-    </AccessibleTouchable>
+    </AccessiblePressable>
   );
 };
 

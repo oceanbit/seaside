@@ -1,9 +1,9 @@
-import { AccessibleTouchable } from "./accessible-touchable";
+import { AccessiblePressable } from "./accessible-pressable";
 import { Text, StyleSheet } from "react-native";
 
 const AccessibleTouchableDemo = ({ ...props }: any) => {
   return (
-    <AccessibleTouchable
+    <AccessiblePressable
       style={style.main}
       focusedStyle={{
         outline: "1px solid red",
@@ -16,7 +16,7 @@ const AccessibleTouchableDemo = ({ ...props }: any) => {
       {...props}
     >
       <Text style={{ color: "inherit" }}>Hello</Text>
-    </AccessibleTouchable>
+    </AccessiblePressable>
   );
 };
 

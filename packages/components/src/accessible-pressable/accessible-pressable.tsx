@@ -11,7 +11,7 @@ import { canUseDOM } from "../utils/can-use-dom";
 interface CheckEventProps {
   eventName: string;
   eventFunction: Function | undefined;
-  viewId: string;
+  nativeId: string;
   eventFunctionCallback: () => void;
 }
 
@@ -19,7 +19,7 @@ export function checkEvent({
   eventName,
   eventFunction,
   eventFunctionCallback,
-  viewId,
+  nativeId,
 }: CheckEventProps) {
   if (eventFunction && typeof eventFunction === "function") {
     eventFunctionCallback();
@@ -27,24 +27,27 @@ export function checkEvent({
   }
   if (canUseDOM()) {
     const toggle = new Event(eventName);
-    const el = document.querySelector("#" + viewId);
+    const el = document.querySelector("#" + nativeId);
     el && el.parentElement!.dispatchEvent(toggle);
   }
 }
 
-type UpstreamTouchableProps = ComponentProps<typeof TouchableWithoutFeedback>;
+type UpstreamPressableProps = ComponentProps<typeof Pressable>;
+
+type NoCallbackStyle = Exclude<UpstreamPressableProps["style"], Function>;
 
 interface AccessibleTouchableBaseProps {
   eventName: string;
   eventFunction: Function | undefined;
   idPrepend: string;
-  focusedStyle: UpstreamTouchableProps["style"];
-  pressedStyle: UpstreamTouchableProps["style"];
-  hoveredStyle: UpstreamTouchableProps["style"];
+  focusedStyle: NoCallbackStyle;
+  pressedStyle: NoCallbackStyle;
+  hoveredStyle: NoCallbackStyle;
+  style: NoCallbackStyle;
 }
 
 type AccessibleTouchableProps = AccessibleTouchableBaseProps &
-  Omit<UpstreamTouchableProps, "onPressIn" | "onPressOut">;
+  Omit<UpstreamPressableProps, "onPressIn" | "onPressOut" | "style">;
 
 export const useCondition = (initial: boolean) => {
   const [condition, setCondition] = useState(initial);
@@ -54,7 +57,7 @@ export const useCondition = (initial: boolean) => {
   return [condition, onActivate, onDeactivate] as const;
 };
 
-export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
+export const AccessiblePressable: FC<AccessibleTouchableProps> = ({
   children,
   eventName,
   eventFunction,
@@ -64,10 +67,13 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   focusedStyle,
   pressedStyle,
   hoveredStyle,
-  ...viewProps
+  ...pressableProps
 }) => {
-  const _viewId = useId();
-  const viewId = useMemo(() => `${idPrepend}${_viewId}`, [idPrepend, _viewId]);
+  const _pressableId = useId();
+  const pressableId = useMemo(
+    () => `${idPrepend}${_pressableId}`,
+    [idPrepend, _pressableId]
+  );
 
   const [pressed, onPressIn, onPressOut] = useCondition(false);
 
@@ -88,20 +94,26 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
   const onPress = useCallback(
     (e: GestureResponderEvent) => {
       if (!propOnPress) return;
-      if (viewProps.disabled) return;
+      if (pressableProps.disabled) return;
       checkEvent({
         eventName,
         eventFunction,
-        viewId,
+        nativeId: pressableId,
         eventFunctionCallback: () => propOnPress(e),
       });
     },
-    [propOnPress, eventName, eventFunction, viewId, viewProps.disabled]
+    [
+      propOnPress,
+      eventName,
+      eventFunction,
+      pressableId,
+      pressableProps.disabled,
+    ]
   );
 
   useLayoutEffect(() => {
     if (canUseDOM()) {
-      const el = document.querySelector<HTMLElement>("#" + viewId);
+      const el = document.querySelector<HTMLElement>("#" + pressableId);
       if (!el) return;
       function onPressLocal(e: KeyboardEvent) {
         if (e.code === "Space") {
@@ -112,7 +124,7 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
       el.addEventListener("keydown", onPressLocal);
       return () => el.removeEventListener("keydown", onPressLocal);
     }
-  }, [viewId, onPress]);
+  }, [pressableId, onPress]);
 
   // Not supported by React Native, but is supported by both RNWs;
   const hoverProps = {
@@ -122,7 +134,7 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
 
   return (
     <Pressable
-      {...viewProps}
+      {...pressableProps}
       {...hoverProps}
       onPress={onPress}
       onPressIn={onPressIn}
@@ -130,7 +142,7 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
       onFocus={onFocus}
       onBlur={onBlur}
       style={mergedStyle}
-      nativeID={viewId}
+      nativeID={pressableId}
     >
       {children}
     </Pressable>
