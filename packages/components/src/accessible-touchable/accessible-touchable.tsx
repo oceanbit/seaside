@@ -1,8 +1,8 @@
 import {
   GestureResponderEvent,
+  Pressable,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
 } from "react-native";
 import { ComponentProps, useMemo, FC, useCallback } from "react";
 import { useId } from "@reach/auto-id";
@@ -121,7 +121,7 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
 
   return (
     <View nativeID={viewId}>
-      <TouchableWithoutFeedback
+      <Pressable
         onPress={onPress}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
@@ -131,7 +131,7 @@ export const AccessibleTouchable: FC<AccessibleTouchableProps> = ({
         {...viewProps}
       >
         {children}
-      </TouchableWithoutFeedback>
+      </Pressable>
     </View>
   );
 };
