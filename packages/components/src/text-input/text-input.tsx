@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
@@ -9,7 +8,7 @@ import {
 import { theme } from "../constants/theme";
 import { DynamicStyleSheet, useDynamicValue } from "react-native-dynamic";
 import { useId } from "@reach/auto-id";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 // import {SharkIconButton} from '../shark-icon-button';
 
 export interface TextInputProps {
@@ -32,7 +31,7 @@ export const TextInput = ({
   keyboardType,
   endIcon,
 }: TextInputProps) => {
-  const [isFocused, setIsFocused] = React.useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const styles = useDynamicValue(dynamicStyles);
 
   const primary = useDynamicValue(theme.colors.primary);
@@ -44,21 +43,21 @@ export const TextInput = ({
   const disabled_border_color = useDynamicValue(theme.colors.tint_neutral_01);
   const label_low_emphasis = useDynamicValue(theme.colors.label_low_emphasis);
 
-  const [coloredBgOpacity] = React.useState(new Animated.Value(0));
-  const [labelTextToken] = React.useState(new Animated.Value(1));
-  const [grayBorderOpacity] = React.useState(new Animated.Value(1));
-  const [coloredBgHeight] = React.useState(new Animated.Value(0));
-  const [textInputHeight, setInputHeight] = React.useState(0);
-  const [labelInputContHeight, setLabelInputContHeight] = React.useState(0);
-  const [labelLeft] = React.useState(new Animated.Value(theme.spacing.xxs));
-  const [labelBottom] = React.useState(new Animated.Value(theme.spacing.xxs));
-  const [labelTop] = React.useState(new Animated.Value(theme.spacing.xxs));
-  const [disabledToken] = React.useState(new Animated.Value(0));
+  const [coloredBgOpacity] = useState(new Animated.Value(0));
+  const [labelTextToken] = useState(new Animated.Value(1));
+  const [grayBorderOpacity] = useState(new Animated.Value(1));
+  const [coloredBgHeight] = useState(new Animated.Value(0));
+  const [textInputHeight, setInputHeight] = useState(0);
+  const [labelInputContHeight, setLabelInputContHeight] = useState(0);
+  const [labelLeft] = useState(new Animated.Value(theme.spacing.xxs));
+  const [labelBottom] = useState(new Animated.Value(theme.spacing.xxs));
+  const [labelTop] = useState(new Animated.Value(theme.spacing.xxs));
+  const [disabledToken] = useState(new Animated.Value(0));
 
   const _textId = useId();
-  const textId = React.useMemo(() => `seatext_internal_${_textId}`, [_textId]);
+  const textId = useMemo(() => `seatext_internal_${_textId}`, [_textId]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (disabled) {
       Animated.timing(disabledToken, {
         toValue: 1,

@@ -1,10 +1,10 @@
-import * as React from "react";
 import { Animated, Platform } from "react-native";
 import { theme } from "../constants/theme";
 import { DynamicStyleSheet, useDynamicValue } from "react-native-dynamic";
 import { colors } from "@seaside/tokens/colors";
 import { AccessiblePressable } from "../accessible-pressable";
 import { WebStyle } from "../types/shared";
+import { useEffect, useState } from "react";
 
 export interface SeaSwitchProps {
   enabled: boolean;
@@ -32,12 +32,12 @@ export const Switch = ({
     theme.colors.tint_neutral_02
   );
 
-  const [switchLeft] = React.useState(new Animated.Value(0));
-  const [thumbDisabled] = React.useState(new Animated.Value(0));
+  const [switchLeft] = useState(new Animated.Value(0));
+  const [thumbDisabled] = useState(new Animated.Value(0));
 
-  const [switchPrimaryBG] = React.useState(new Animated.Value(0));
+  const [switchPrimaryBG] = useState(new Animated.Value(0));
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (disabled) {
       Animated.timing(thumbDisabled, {
         toValue: 1,

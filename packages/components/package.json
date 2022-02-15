@@ -20,8 +20,12 @@
   },
   "typesVersions": {
     "*": {
-      "react": ["dist/index.d.ts"],
-      "compat": ["dist/compat.d.ts"]
+      "react": [
+        "dist/index.d.ts"
+      ],
+      "compat": [
+        "dist/compat.d.ts"
+      ]
     }
   },
   "main": "./dist/index.js",
@@ -43,9 +47,9 @@
   ],
   "dependencies": {
     "@reach/auto-id": "^0.16.0",
+    "@seaside/tokens": "*",
     "react-native-dynamic": "^1.0.0",
-    "react-native-vector-icons": "^9.0.0",
-    "@seaside/tokens": "*"
+    "react-native-vector-icons": "^9.0.0"
   },
   "peerDependencies": {
     "react": "^17.0.2",
