@@ -1,6 +1,8 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 
+const root = path.resolve(__dirname, "./");
+
 module.exports = [
   {
     name: "seaside-react-native",
@@ -94,23 +96,38 @@ module.exports = [
       ],
       rules: [
         {
-          test: /\.tsx?$/,
-          use: "ts-loader",
-          exclude: /node_modules/,
+          test: /\.(ts|tsx|js|jsx)?$/,
+          include: [
+            path.resolve(root, "src"),
+            path.resolve(root, "../../node_modules/react-native-uncompiled"),
+            path.resolve(root, "../../node_modules/react-native-dynamic"),
+            path.resolve(root, "../../node_modules/react-native-vector-icons"),
+            path.resolve(root, "../tokens"),
+          ],
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                babelrc: false,
+                configFile: false,
+                cacheDirectory: true,
+                presets: ["@babel/preset-react", "@babel/preset-typescript"],
+                plugins: [["react-native-web"]],
+              },
+            },
+          ],
         },
       ],
     },
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
-      alias: {
-        "react-native$": "react-native-web/dist/index.js",
-      },
     },
     output: {
       filename: "react.js",
       path: path.resolve(__dirname, "dist"),
       libraryTarget: "commonjs",
     },
+    // plugins: [new BundleAnalyzerPlugin()],
   },
   {
     name: "seaside-compat",
@@ -119,13 +136,35 @@ module.exports = [
       rules: [
         {
           test: /\.tsx?$/,
-          use: {
-            loader: "ts-loader",
-            options: {
-              configFile: "tsconfig.preact.json",
+          use: [
+            {
+              loader: "ts-loader",
+              options: {
+                configFile: "tsconfig.preact.json",
+              },
             },
-          },
+          ],
           exclude: /node_modules/,
+        },
+        {
+          test: /\.(js|jsx)?$/,
+          include: [
+            path.resolve(root, "src"),
+            path.resolve(root, "../../node_modules/react-native-uncompiled"),
+            path.resolve(root, "../../node_modules/react-native-dynamic"),
+            path.resolve(root, "../../node_modules/react-native-vector-icons"),
+          ],
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                babelrc: false,
+                configFile: false,
+                cacheDirectory: true,
+                presets: ["@babel/preset-react", "@babel/preset-typescript"],
+              },
+            },
+          ],
         },
       ],
     },
@@ -147,6 +186,7 @@ module.exports = [
       libraryTarget: "umd",
       library: "Seaside",
     },
+    // plugins: [new BundleAnalyzerPlugin()],
   },
 ];
 
