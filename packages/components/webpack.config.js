@@ -27,6 +27,25 @@ module.exports = [
           ],
           exclude: /node_modules/,
         },
+        {
+          test: /\.(js|jsx)?$/,
+          include: [
+            path.resolve(root, "../../node_modules/react-native-uncompiled"),
+            path.resolve(root, "../../node_modules/react-native-dynamic"),
+            path.resolve(root, "../../node_modules/react-native-vector-icons"),
+          ],
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                babelrc: false,
+                configFile: false,
+                cacheDirectory: true,
+                presets: ["@babel/preset-react"],
+              },
+            },
+          ],
+        },
       ],
     },
     resolve: {
@@ -149,7 +168,6 @@ module.exports = [
         {
           test: /\.(js|jsx)?$/,
           include: [
-            path.resolve(root, "src"),
             path.resolve(root, "../../node_modules/react-native-uncompiled"),
             path.resolve(root, "../../node_modules/react-native-dynamic"),
             path.resolve(root, "../../node_modules/react-native-vector-icons"),
@@ -161,7 +179,7 @@ module.exports = [
                 babelrc: false,
                 configFile: false,
                 cacheDirectory: true,
-                presets: ["@babel/preset-react", "@babel/preset-typescript"],
+                presets: ["@babel/preset-react"],
               },
             },
           ],
