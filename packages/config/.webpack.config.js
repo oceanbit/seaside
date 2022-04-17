@@ -7,8 +7,8 @@ module.exports = {
       include: [
         path.resolve(root, "src"),
         path.resolve(root, "../../node_modules/react-native-uncompiled"),
-        path.resolve(root, "../../node_modules/react-native-dynamic"),
         path.resolve(root, "../../node_modules/react-native-vector-icons"),
+        path.resolve(root, "../stylesheet"),
         path.resolve(root, "../tokens"),
       ],
       use: [

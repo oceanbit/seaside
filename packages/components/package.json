@@ -47,9 +47,9 @@
   ],
   "dependencies": {
     "@reach/auto-id": "^0.16.0",
+    "@seaside/stylesheet": "*",
     "@seaside/tokens": "*",
     "babel-plugin-react-native-web": "^0.17.5",
-    "react-native-dynamic": "^1.0.0",
     "react-native-vector-icons": "^9.0.0"
   },
   "peerDependencies": {

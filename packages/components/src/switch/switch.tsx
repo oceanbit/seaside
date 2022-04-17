@@ -1,6 +1,6 @@
 import { Animated, Platform } from "react-native";
 import { theme } from "../constants/theme";
-import { DynamicStyleSheet, useDynamicValue } from "react-native-dynamic";
+import { DynamicStyleSheet, useDynamicValue } from "@seaside/stylesheet";
 import { colors } from "@seaside/tokens/colors";
 import { AccessiblePressable } from "../accessible-pressable";
 import { WebStyle } from "../types/shared";

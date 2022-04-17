@@ -3,7 +3,7 @@ import {
   darkTheme as darkSeaside,
   fullTheme,
 } from "@seaside/tokens/theme";
-import { DynamicValue } from "react-native-dynamic";
+import { DynamicValue } from "@seaside/stylesheet";
 import { textStyles } from "./text-styles";
 
 /**

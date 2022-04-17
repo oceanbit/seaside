@@ -6,7 +6,7 @@ import {
   Animated,
 } from "react-native";
 import { theme } from "../constants/theme";
-import { DynamicStyleSheet, useDynamicValue } from "react-native-dynamic";
+import { DynamicStyleSheet, useDynamicValue } from "@seaside/stylesheet";
 import { useId } from "@reach/auto-id";
 import { useEffect, useMemo, useState } from "react";
 // import {SharkIconButton} from '../shark-icon-button';

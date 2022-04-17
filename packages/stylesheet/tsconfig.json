@@ -1,0 +1,11 @@
+{
+	"extends": "@seaside/tsconfig/react-library.json",
+	"compilerOptions": {
+		"declaration": true,
+		"incremental": true,
+		"sourceMap": true,
+		"outDir": "./dist",
+		"baseUrl": "."
+	},
+	"include": ["./src"]
+}

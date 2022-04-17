@@ -1,8 +1,7 @@
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from "react-native";
-import { IndexedObject, ValueOf } from "toolkit.ts";
 
 import { DynamicValue, useDynamicValue } from "./dynamic-value";
-import { Mode } from "./types";
+import { IndexedObject, Mode, ValueOf } from "./types";
 
 declare const process: {
   env: {

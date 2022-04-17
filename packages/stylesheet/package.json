@@ -26,6 +26,7 @@
   "devDependencies": {
     "@babel/core": "^7.10.3",
     "@babel/runtime": "^7.10.3",
+    "@seaside/tsconfig": "*",
     "@types/react-native": "^0.62.13",
     "babel-plugin-module-resolver": "^4.0.0",
     "metro-react-native-babel-preset": "^0.59.0",

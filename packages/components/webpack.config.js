@@ -147,8 +147,8 @@ module.exports = [
           test: /\.(js|jsx)?$/,
           include: [
             path.resolve(root, "../../node_modules/react-native-uncompiled"),
-            path.resolve(root, "../../node_modules/react-native-dynamic"),
             path.resolve(root, "../../node_modules/react-native-vector-icons"),
+            path.resolve(root, "../stylesheet"),
           ],
           use: [
             {
