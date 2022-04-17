@@ -1,19 +1,9 @@
+const path = require("path");
+const root = path.resolve(__dirname, "../");
+const { reactRule } = require("@seaside/config/.webpack.config.js");
+
 module.exports = ({config, mode}) => {
-  config.module.rules.push({
-    test: /\.(ts|tsx)$/,
-    exclude: /node_modules/,
-    use: [
-      {
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            "@babel/preset-flow"
-          ]
-        }
-      },
-      {loader: 'ts-loader'}
-    ],
-  });
+  config.module.rules.push(reactRule(root));
 
   config.resolve.alias = {
     ...config.resolve.alias,

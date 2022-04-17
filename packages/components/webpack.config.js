@@ -1,5 +1,6 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
+const { reactRule } = require("@seaside/config/.webpack.config.js");
 
 const root = path.resolve(__dirname, "./");
 
@@ -113,30 +114,7 @@ module.exports = [
         require.resolve("react-dom"),
         require.resolve("react-dom/server"),
       ],
-      rules: [
-        {
-          test: /\.(ts|tsx|js|jsx)?$/,
-          include: [
-            path.resolve(root, "src"),
-            path.resolve(root, "../../node_modules/react-native-uncompiled"),
-            path.resolve(root, "../../node_modules/react-native-dynamic"),
-            path.resolve(root, "../../node_modules/react-native-vector-icons"),
-            path.resolve(root, "../tokens"),
-          ],
-          use: [
-            {
-              loader: "babel-loader",
-              options: {
-                babelrc: false,
-                configFile: false,
-                cacheDirectory: true,
-                presets: ["@babel/preset-react", "@babel/preset-typescript"],
-                plugins: [["react-native-web"]],
-              },
-            },
-          ],
-        },
-      ],
+      rules: [reactRule(root)],
     },
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
