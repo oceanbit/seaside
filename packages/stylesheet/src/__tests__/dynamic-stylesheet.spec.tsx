@@ -1,7 +1,10 @@
-import { DynamicValue, useDynamicValue } from "../dynamic-value";
-import { Appearance, Text, View } from "react-native";
+import { createDarkModeValue } from "../dynamic-value";
+import { Text } from "react-native";
 import { render } from "@testing-library/react-native";
-import { DynamicStyleSheet } from "../dynamic-style-sheet";
+import {
+  DynamicStyleSheet,
+  useDynamicStyleSheet,
+} from "../dynamic-style-sheet";
 
 let mockDarkMode = { current: "light" };
 beforeAll(() => {
@@ -17,13 +20,13 @@ afterAll(() => {
 });
 
 const TestComponent = () => {
-  const styleSheet = new DynamicStyleSheet({
+  const styleSheet = new DynamicStyleSheet(() => ({
     mainStyle: {
-      color: new DynamicValue("#000", "#FFF"),
+      color: createDarkModeValue("#000", "#FFF"),
     },
-  });
+  }));
 
-  const style = useDynamicValue(styleSheet);
+  const style = useDynamicStyleSheet(styleSheet);
   return <Text style={style.mainStyle}>Test</Text>;
 };
 

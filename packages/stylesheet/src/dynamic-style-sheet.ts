@@ -1,7 +1,8 @@
-import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from "react-native";
+import { ViewStyle, TextStyle, ImageStyle } from "react-native";
 
-import { DynamicValue, useDynamicValue } from "./dynamic-value";
+import { IDynamicValue } from "./dynamic-value";
 import { IndexedObject, Mode, ValueOf } from "./types";
+import { useColorSchemeContext } from "./context";
 
 declare const process: {
   env: {
@@ -12,7 +13,7 @@ declare const process: {
 type Style = ViewStyle | TextStyle | ImageStyle;
 
 type DynamicStyle<T extends Style> = {
-  [Key in keyof T]: T[Key] | DynamicValue<T[Key]>;
+  [Key in keyof T]: T[Key] | IDynamicValue<T[Key]>;
 };
 type DynamicStyles<T> = { [P in keyof T]: DynamicStyle<Style> };
 
@@ -40,9 +41,11 @@ function parseStylesFor<T extends DynamicStyles<T>>(
     for (const i in style) {
       const value = style[i];
 
-      if (value instanceof DynamicValue) {
+      const isValDynamic = (v: any): v is IDynamicValue<Value> =>
+        v instanceof Function;
+      if (isValDynamic(value)) {
         containsDynamicValues = true;
-        newStyle[i] = value[mode];
+        newStyle[i] = value({ isDark: mode === "dark" });
       } else {
         newStyle[i] = value as Value;
       }
@@ -59,18 +62,32 @@ function parseStylesFor<T extends DynamicStyles<T>>(
   return newStyles as unknown as NormalizeStyles<T>;
 }
 
-export class DynamicStyleSheet<T extends DynamicStyles<T>> {
-  public readonly dark: NormalizeStyles<T>;
-  public readonly light: NormalizeStyles<T>;
+interface DynamicStyleSheetFnProps {
+  mode: Mode;
+  theme: object;
+}
 
-  constructor(styles: T) {
-    this.dark = StyleSheet.create(
-      parseStylesFor(styles, "dark")
-    ) as NormalizeStyles<T>;
-    this.light = StyleSheet.create(
-      parseStylesFor(styles, "light")
-    ) as NormalizeStyles<T>;
+type DynamicStyleSheetFn<T extends DynamicStyles<any>> = (
+  props?: DynamicStyleSheetFnProps
+) => T;
+
+export class DynamicStyleSheet<
+  Fn extends DynamicStyleSheetFn<any> = DynamicStyleSheetFn<any>
+> {
+  public readonly __fn: Fn;
+
+  constructor(stylesFn: Fn) {
+    this.__fn = stylesFn;
+  }
+
+  getStyleFor(mode: "light" | "dark"): NormalizeStyles<ReturnType<Fn>> {
+    return parseStylesFor(this.__fn({ mode, theme: {} }), mode);
   }
 }
 
-export const useDynamicStyleSheet = useDynamicValue;
+export const useDynamicStyleSheet = <Fn extends DynamicStyleSheetFn<any>>(
+  styleSheet: DynamicStyleSheet<Fn>
+) => {
+  const mode = useColorSchemeContext();
+  return styleSheet.getStyleFor(mode);
+};

@@ -6,7 +6,11 @@ import {
   Animated,
 } from "react-native";
 import { theme } from "../constants/theme";
-import { DynamicStyleSheet, useDynamicValue } from "@seaside/stylesheet";
+import {
+  DynamicStyleSheet,
+  useDarkModeValue,
+  useDynamicStyleSheet,
+} from "@seaside/stylesheet";
 import { useId } from "@reach/auto-id";
 import { useEffect, useMemo, useState } from "react";
 // import {SharkIconButton} from '../shark-icon-button';
@@ -32,16 +36,18 @@ export const TextInput = ({
   endIcon,
 }: TextInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
-  const styles = useDynamicValue(dynamicStyles);
+  const styles = useDynamicStyleSheet(dynamicStyles);
 
-  const primary = useDynamicValue(theme.colors.primary);
-  const label_high_emphasis = useDynamicValue(theme.colors.label_high_emphasis);
+  const primary = useDarkModeValue(theme.colors.primary);
+  const label_high_emphasis = useDarkModeValue(
+    theme.colors.label_high_emphasis
+  );
 
-  const disabled_background_color = useDynamicValue(
+  const disabled_background_color = useDarkModeValue(
     theme.colors.tint_neutral_02
   );
-  const disabled_border_color = useDynamicValue(theme.colors.tint_neutral_01);
-  const label_low_emphasis = useDynamicValue(theme.colors.label_low_emphasis);
+  const disabled_border_color = useDarkModeValue(theme.colors.tint_neutral_01);
+  const label_low_emphasis = useDarkModeValue(theme.colors.label_low_emphasis);
 
   const [coloredBgOpacity] = useState(new Animated.Value(0));
   const [labelTextToken] = useState(new Animated.Value(1));
@@ -287,55 +293,58 @@ export const TextInput = ({
   );
 };
 
-const dynamicStyles = new DynamicStyleSheet({
-  inputLabelContainer: {
-    position: "relative",
-    borderWidth: 1,
-    borderColor: "transparent",
-  },
-  label: {
-    // Overline 2
-    ...theme.textStyles.overline,
-    textTransform: "uppercase",
-  },
-  textInpContainer: {
-    padding: theme.spacing.xxs,
-    display: "flex",
-    flexDirection: "row",
-    borderRadius: theme.borderRadius.regular,
-  },
-  textInput: {
-    flexGrow: 1,
-    padding: theme.spacing.xs,
-    ...theme.textStyles.body_01,
-    color: theme.colors.label_high_emphasis,
-  },
-  blueBackground: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    left: 0,
-    backgroundColor: theme.colors.tint_primary_01,
-    borderRadius: theme.borderRadius.regular,
-  },
-  greyBorderContainer: {
-    position: "absolute",
-    borderWidth: theme.borders.normal,
-    width: "100%",
-    bottom: 0,
-    left: 0,
-    borderRadius: theme.borderRadius.regular,
-    zIndex: 1,
-  },
-  blueBorder: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    // Arbitary height in order to enforce border-radius
-    height: 100,
-    borderBottomWidth: theme.borders.thick,
-    borderBottomColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.regular,
-  },
-});
+const dynamicStyles = new DynamicStyleSheet(
+  () =>
+    ({
+      inputLabelContainer: {
+        position: "relative",
+        borderWidth: 1,
+        borderColor: "transparent",
+      },
+      label: {
+        // Overline 2
+        ...theme.textStyles.overline,
+        textTransform: "uppercase",
+      },
+      textInpContainer: {
+        padding: theme.spacing.xxs,
+        display: "flex",
+        flexDirection: "row",
+        borderRadius: theme.borderRadius.regular,
+      },
+      textInput: {
+        flexGrow: 1,
+        padding: theme.spacing.xs,
+        ...theme.textStyles.body_01,
+        color: theme.colors.label_high_emphasis,
+      },
+      blueBackground: {
+        position: "absolute",
+        bottom: 0,
+        width: "100%",
+        left: 0,
+        backgroundColor: theme.colors.tint_primary_01,
+        borderRadius: theme.borderRadius.regular,
+      },
+      greyBorderContainer: {
+        position: "absolute",
+        borderWidth: theme.borders.normal,
+        width: "100%",
+        bottom: 0,
+        left: 0,
+        borderRadius: theme.borderRadius.regular,
+        zIndex: 1,
+      },
+      blueBorder: {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        width: "100%",
+        // Arbitary height in order to enforce border-radius
+        height: 100,
+        borderBottomWidth: theme.borders.thick,
+        borderBottomColor: theme.colors.primary,
+        borderRadius: theme.borderRadius.regular,
+      },
+    } as const)
+);

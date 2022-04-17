@@ -3,7 +3,7 @@ import {
   darkTheme as darkSeaside,
   fullTheme,
 } from "@seaside/tokens/theme";
-import { DynamicValue } from "@seaside/stylesheet";
+import { createDarkModeValue, IDynamicValue } from "@seaside/stylesheet";
 import { textStyles } from "./text-styles";
 
 /**
@@ -17,15 +17,15 @@ const colors = Object.keys(lightSeaside.colors).reduce(
     if (lightVal === darkVal) {
       prev[theKey] = lightVal as any;
     } else {
-      prev[theKey] = new DynamicValue(lightVal, darkVal);
+      prev[theKey] = createDarkModeValue(lightVal, darkVal);
     }
     return prev;
   },
   {
-    label_medium_emphasis_no_opacity: new DynamicValue("#717f9b", "#8f97a8"),
+    label_medium_emphasis_no_opacity: createDarkModeValue("#717f9b", "#8f97a8"),
     // Temporary, as this should be moved into @oceanbit/styles
-  } as Record<keyof typeof lightSeaside.colors, DynamicValue<string>> & {
-    label_medium_emphasis_no_opacity: DynamicValue<string>;
+  } as Record<keyof typeof lightSeaside.colors, IDynamicValue<string>> & {
+    label_medium_emphasis_no_opacity: IDynamicValue<string>;
   }
 );
 

@@ -1,21 +1,20 @@
 import { useColorSchemeContext } from "./context";
 
-interface IDynamicValue<T> {
-  light: T;
-  dark: T;
+interface IDynamicValueProps {
+  isDark: boolean;
 }
 
-export class DynamicValue<T> implements IDynamicValue<T> {
-  constructor(public readonly light: T, public readonly dark: T) {}
-}
+// Move this to a function so that when we introduce responsive functions, we can simply pass everything
+// and support those dynamic values as well.
+export type IDynamicValue<T> = ({ isDark }: IDynamicValueProps) => T;
 
-export function useDynamicValue<T>(dynamic: IDynamicValue<T>): T;
-export function useDynamicValue<T>(light: T, dark: T): T;
-export function useDynamicValue<T>(light: T | IDynamicValue<T>, dark?: T): T {
+export const createDarkModeValue = <T>(light: T, dark: T): IDynamicValue<T> => {
+  return ({ isDark }) => {
+    return isDark ? dark : light;
+  };
+};
+
+export function useDarkModeValue<T>(dynamic: IDynamicValue<T>) {
   const mode = useColorSchemeContext();
-  if (arguments.length > 1) {
-    return mode === "dark" ? dark! : (light as T);
-  } else {
-    return (light as IDynamicValue<T>)[mode];
-  }
+  return dynamic({ isDark: mode === "dark" });
 }

@@ -1,4 +1,4 @@
-import { useDynamicValue } from "../dynamic-value";
+import { createDarkModeValue, useDarkModeValue } from "../dynamic-value";
 import { Text } from "react-native";
 import { render } from "@testing-library/react-native";
 import { ColorSchemeProvider } from "../context";
@@ -17,13 +17,15 @@ afterAll(() => {
 });
 
 const TestComponent = () => {
-  const value = useDynamicValue({ light: "light", dark: "dark" });
+  const dynamicValue = createDarkModeValue("light", "dark");
+  const value = useDarkModeValue(dynamicValue);
   return <Text>{value}</Text>;
 };
 
 const TestComponentWithContext = ({ mode }: { mode: "light" | "dark" }) => {
   const SubComp = () => {
-    const value = useDynamicValue({ light: "light", dark: "dark" });
+    const dynamicValue = createDarkModeValue("light", "dark");
+    const value = useDarkModeValue(dynamicValue);
     return <Text>{value}</Text>;
   };
 
