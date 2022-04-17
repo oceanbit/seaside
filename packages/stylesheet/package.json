@@ -1,0 +1,35 @@
+{
+  "name": "@seaside/stylesheet",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "description": "Stylesheets that support media queries, context passing, and more.",
+  "license": "MIT",
+  "scripts": {
+    "prepublishOnly": "yarn run clean && yarn run build",
+    "clean": "rimraf dist",
+    "build": "tsc",
+    "watch": "yarn run build --watch"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-native": "^0.66.4"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/runtime": "^7.10.3",
+    "@types/react-native": "^0.62.13",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "metro-react-native-babel-preset": "^0.59.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.3"
+  }
+}
