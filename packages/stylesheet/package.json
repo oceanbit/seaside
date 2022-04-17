@@ -8,6 +8,7 @@
   "scripts": {
     "prepublishOnly": "yarn run clean && yarn run build",
     "clean": "rimraf dist",
+    "test": "jest",
     "build": "tsc",
     "watch": "yarn run build --watch"
   },
@@ -27,10 +28,16 @@
     "@babel/core": "^7.10.3",
     "@babel/runtime": "^7.10.3",
     "@seaside/tsconfig": "*",
+    "@testing-library/jest-native": "^4.0.4",
+    "@testing-library/react-native": "^9.0.0",
     "@types/react-native": "^0.62.13",
+    "@types/jest": "^27.0.3",
     "babel-plugin-module-resolver": "^4.0.0",
     "metro-react-native-babel-preset": "^0.59.0",
+    "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.2",
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.2",
     "typescript": "^4.5.3"
   }
 }

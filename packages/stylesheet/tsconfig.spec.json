@@ -1,0 +1,13 @@
+{
+  "extends": "@seaside/tsconfig/react-library.json",
+  "include": ["**/*.spec.tsx", "**/*.spec.ts"],
+  "exclude": ["dist", "build", "node_modules"],
+  "declaration": false,
+  "compilerOptions": {
+    "isolatedModules": false,
+    "lib": ["dom", "es2020"],
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "types": ["jest", "@testing-library/jest-native"]
+  }
+}
