@@ -50,7 +50,7 @@ function parseStylesFor<T extends DynamicStyles<T>>(
         v instanceof Function;
       if (isValDynamic(value)) {
         containsDynamicValues = true;
-        newStyle[i] = value({ isDark: props.mode === "dark", ...props });
+        newStyle[i] = value({ ...props });
       } else {
         newStyle[i] = value as Value;
       }
