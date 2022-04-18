@@ -3,12 +3,13 @@ import {
   DynamicStyleSheet,
   useDarkModeValue,
   useDynamicStyleSheet,
+  SheetProps,
 } from "@seaside/stylesheet";
 import { colors } from "@seaside/tokens/colors";
 import { AccessiblePressable } from "../accessible-pressable";
 import { WebStyle } from "../types/shared";
 import { useEffect, useState } from "react";
-import { Theme } from "../provider/theme-provider";
+import { Theme, useTheme } from "../provider/theme-provider";
 
 export interface SeaSwitchProps {
   enabled: boolean;
@@ -25,6 +26,7 @@ export const Switch = ({
   disabled,
   label,
 }: SeaSwitchProps) => {
+  const theme = useTheme();
   const styles = useDynamicStyleSheet(dynamicStyles);
 
   const primary = useDarkModeValue<string>(theme.colors.primary);
@@ -142,8 +144,8 @@ export const SwitchWatchedAttributes = [
   "label",
 ] as Array<keyof SeaSwitchProps>;
 
-const dynamicStyles = new DynamicStyleSheet<Theme>(
-  ({ theme, mode }) =>
+const dynamicStyles = new DynamicStyleSheet(
+  ({ theme }: SheetProps<Theme>) =>
     ({
       switchBox: {
         paddingHorizontal: theme.spacing.xxs,

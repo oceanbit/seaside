@@ -5,14 +5,15 @@ import {
   View,
   Animated,
 } from "react-native";
-import { theme } from "../constants/theme";
 import {
   DynamicStyleSheet,
+  SheetProps,
   useDarkModeValue,
   useDynamicStyleSheet,
 } from "@seaside/stylesheet";
 import { useId } from "@reach/auto-id";
 import { useEffect, useMemo, useState } from "react";
+import { Theme, useTheme } from "../provider/theme-provider";
 // import {SharkIconButton} from '../shark-icon-button';
 
 export interface TextInputProps {
@@ -35,6 +36,7 @@ export const TextInput = ({
   keyboardType,
   endIcon,
 }: TextInputProps) => {
+  const theme = useTheme();
   const [isFocused, setIsFocused] = useState(false);
   const styles = useDynamicStyleSheet(dynamicStyles);
 
@@ -294,7 +296,7 @@ export const TextInput = ({
 };
 
 const dynamicStyles = new DynamicStyleSheet(
-  () =>
+  ({ theme }: SheetProps<Theme>) =>
     ({
       inputLabelContainer: {
         position: "relative",

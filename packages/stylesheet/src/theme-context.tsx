@@ -1,18 +1,27 @@
 import { createContext, useContext, ReactNode } from "react";
-import { SimpleRecord } from "./types";
+import { IDynamicValue } from "./dynamic-value";
+
+export type ThemeRecord = {
+  [key: string]:
+    | string
+    | number
+    | IDynamicValue<string>
+    | IDynamicValue<number>
+    | ThemeRecord;
+};
 
 interface ThemeContextType {
-  theme: SimpleRecord;
+  theme: ThemeRecord;
 }
 export const ThemeContext = createContext<ThemeContextType>({ theme: {} });
 ThemeContext.displayName = "ThemeContext";
 
-interface ThemeProviderProps<T extends SimpleRecord> {
+interface ThemeProviderProps<T extends ThemeRecord> {
   theme: T;
   children: ReactNode;
 }
 
-export function ThemeProvider<T extends SimpleRecord>({
+export function ThemeProvider<T extends ThemeRecord>({
   children,
   theme,
 }: ThemeProviderProps<T>) {

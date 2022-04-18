@@ -9,7 +9,7 @@ export const ThemeProvider: FC = ({ children }) => {
   return <ThemeProviderBase theme={theme}>{children}</ThemeProviderBase>;
 };
 
-const useTheme = () => {
+export const useTheme = () => {
   return useThemeBase() as typeof theme;
 };
 
