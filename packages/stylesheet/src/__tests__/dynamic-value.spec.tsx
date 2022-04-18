@@ -1,7 +1,7 @@
 import { createDarkModeValue, useDarkModeValue } from "../dynamic-value";
 import { Text } from "react-native";
 import { render } from "@testing-library/react-native";
-import { ColorSchemeProvider } from "../context";
+import { ColorSchemeProvider } from "../color-scheme-context";
 
 let mockDarkMode = { current: "light" };
 beforeAll(() => {

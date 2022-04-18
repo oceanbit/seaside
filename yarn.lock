@@ -39,7 +39,7 @@
   dependencies:
     "@babel/highlight" "^7.16.0"
 
-"@babel/code-frame@^7.16.7":
+"@babel/code-frame@^7.15.8", "@babel/code-frame@^7.16.7":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.16.7.tgz#44416b6bd7624b998f5b1af5d470856c40138789"
   integrity sha512-iAXqUn8IIeBTNd72xsFlgaXHkMBMt6y4HJp1tIaK465CWLT/fG1aqB7ykr95gHHmlBdGbFeWWfyB4NJJ0nmeIg==
@@ -3610,6 +3610,11 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
+"@tsd/typescript@^4.6.3":
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/@tsd/typescript/-/typescript-4.6.3.tgz#9b4c8198da7614fe1547436fbd5657cfe8327c1d"
+  integrity sha512-WjipklCf6qWQL4Hkw+FSwOXMA5JqKv04ro/c1aviYSzLJFdcFMrR/FHjOGBIEAIq7pb8Bw74wd+G45dWfC/Jnw==
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.14":
   version "7.1.17"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.17.tgz#f50ac9d20d64153b510578d84f9643f9a3afbe64"
@@ -6712,6 +6717,15 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     ripemd160 "^2.0.0"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+create-jest-runner@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/create-jest-runner/-/create-jest-runner-0.9.0.tgz#106829db9ab15267897af61a897e73750330d0cf"
+  integrity sha512-cxfAQYKe+bqjqyE6XuF4flJfayko47E8Wd6NUZlPkclPf6yT8yRbGtD94Zq8FESOHJU3m+TWznBl4YOkfkzV7A==
+  dependencies:
+    chalk "^4.1.0"
+    jest-worker "^27.0.6"
+    throat "^6.0.1"
 
 create-react-class@^15.7.0:
   version "15.7.0"
@@ -11016,6 +11030,16 @@ jest-resolve@^27.4.5:
     resolve.exports "^1.1.0"
     slash "^3.0.0"
 
+jest-runner-tsd@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/jest-runner-tsd/-/jest-runner-tsd-3.0.0.tgz#6cfd7a5aedf32f7bd32d6fcd716c8826c2692b8a"
+  integrity sha512-CS0KLp2EMw1FGRT/1kO8/hNMDDJsDbISBgUOn3u1tC3OhHwy1G9WNYiyuOaYsI4JQGKre47TpklzVWwZn0nOMA==
+  dependencies:
+    "@babel/code-frame" "^7.15.8"
+    chalk "^4.1.2"
+    create-jest-runner "^0.9.0"
+    tsd-lite "^0.5.0"
+
 jest-runner@^27.4.5:
   version "27.4.5"
   resolved "https://registry.yarnpkg.com/jest-runner/-/jest-runner-27.4.5.tgz#daba2ba71c8f34137dc7ac45616add35370a681e"
@@ -11200,6 +11224,15 @@ jest-worker@^26.0.0, jest-worker@^26.2.1, jest-worker@^26.5.0, jest-worker@^26.6
     "@types/node" "*"
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
+
+jest-worker@^27.0.6:
+  version "27.5.1"
+  resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-27.5.1.tgz#8d146f0900e8973b106b6f73cc1e9a8cb86f8db0"
+  integrity sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==
+  dependencies:
+    "@types/node" "*"
+    merge-stream "^2.0.0"
+    supports-color "^8.0.0"
 
 jest-worker@^27.4.1, jest-worker@^27.4.5:
   version "27.4.5"
@@ -17494,6 +17527,11 @@ tsconfig-paths@^3.11.0:
     json5 "^1.0.1"
     minimist "^1.2.0"
     strip-bom "^3.0.0"
+
+tsd-lite@^0.5.0, tsd-lite@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/tsd-lite/-/tsd-lite-0.5.3.tgz#0ba6bd1ee2d544e373adafbb81c911215d01c9fc"
+  integrity sha512-nQIGluboLZg8d49NxWLuNH6Y6jlXL1rErK+Prf5B1XIiEAD6OTsIAWRMrYM+Wy2t2lKPZkpVskbtFp/uF2LiEQ==
 
 tslib@^1.8.1:
   version "1.14.1"

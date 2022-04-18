@@ -8,7 +8,9 @@
   "scripts": {
     "prepublishOnly": "yarn run clean && yarn run build",
     "clean": "rimraf dist",
-    "test": "jest",
+    "test": "yarn test:logic && yarn test:types",
+    "test:logic": "jest",
+    "test:types": "jest -c jest.config.tsd.js",
     "build": "tsc",
     "watch": "yarn run build --watch"
   },
@@ -30,14 +32,17 @@
     "@seaside/tsconfig": "*",
     "@testing-library/jest-native": "^4.0.4",
     "@testing-library/react-native": "^9.0.0",
-    "@types/react-native": "^0.62.13",
+    "@tsd/typescript": "^4.6.3",
     "@types/jest": "^27.0.3",
+    "@types/react-native": "^0.62.13",
     "babel-plugin-module-resolver": "^4.0.0",
+    "jest": "^27.4.5",
+    "jest-runner-tsd": "^3.0.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "react-test-renderer": "^17.0.2",
     "rimraf": "^3.0.2",
-    "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
+    "tsd-lite": "^0.5.3",
     "typescript": "^4.5.3"
   }
 }
