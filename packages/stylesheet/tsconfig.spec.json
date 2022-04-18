@@ -1,7 +1,7 @@
 {
   "extends": "@seaside/tsconfig/react-library.json",
   "include": ["**/*.spec.tsx", "**/*.spec.ts"],
-  "exclude": ["dist", "build", "node_modules"],
+  "exclude": ["dist", "build", "node_modules", "**/*.test-d.tsx", "**/*.test-d.ts"],
   "declaration": false,
   "compilerOptions": {
     "isolatedModules": false,

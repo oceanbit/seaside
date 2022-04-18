@@ -1,6 +1,6 @@
 {
 	"extends": "@seaside/tsconfig/react-library.json",
-	"exclude": ["dist", "build", "node_modules", "**/*.spec.tsx"],
+	"exclude": ["dist", "build", "node_modules", "**/*.spec.tsx", "**/*.spec.ts", "**/*.test-d.tsx", "**/*.test-d.ts"],
 	"compilerOptions": {
 		"declaration": true,
 		"incremental": true,
