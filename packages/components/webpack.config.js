@@ -65,8 +65,13 @@ module.exports = [
         patterns: [
           {
             from: "src/**/*.d.ts",
-            to: () => {
-              return "[name][ext]";
+            to: ({ absoluteFilename }) => {
+              // Preserve the directory structure
+              const relPath = path.relative(
+                path.join(__dirname, "src"),
+                absoluteFilename
+              );
+              return relPath;
             },
           },
         ],
