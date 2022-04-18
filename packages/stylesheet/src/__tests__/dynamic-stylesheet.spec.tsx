@@ -1,22 +1,38 @@
 import { createDarkModeValue } from "../dynamic-value";
 import { Text } from "react-native";
-import { render } from "@testing-library/react-native";
+import { act, render } from "@testing-library/react-native";
 import {
   DynamicStyleSheet,
   useDynamicStyleSheet,
 } from "../dynamic-style-sheet";
 
-let mockDarkMode = { current: "light" };
+let mockCurrentMode: { current: "light" | "dark" | null } = { current: null };
+type ChangeListenerFn = (p: { colorScheme: "light" | "dark" }) => void;
+let mockFunctions = [] as ChangeListenerFn[];
+const changeDarkMode = (mode: "light" | "dark") => {
+  mockCurrentMode.current = mode;
+  act(() => mockFunctions.forEach((fn) => fn({ colorScheme: mode })));
+};
 beforeAll(() => {
-  jest.mock("react-native/Libraries/Utilities/useColorScheme", () => {
+  jest.mock("react-native/Libraries/Utilities/Appearance", () => {
     return {
-      default: () => mockDarkMode.current,
+      addChangeListener(fn: ChangeListenerFn) {
+        mockFunctions.push(fn);
+        return {
+          remove() {
+            mockFunctions = mockFunctions.filter((f) => f !== fn);
+          },
+        };
+      },
+      getColorScheme() {
+        return mockCurrentMode.current;
+      },
     };
   });
 });
 
 afterAll(() => {
-  jest.unmock("react-native/Libraries/Utilities/useColorScheme");
+  jest.unmock("react-native/Libraries/Utilities/Appearance");
 });
 
 const TestComponent = () => {
@@ -32,23 +48,22 @@ const TestComponent = () => {
 
 describe("Dynamic Stylesheet", function () {
   test("Expect light mode styling to apply with light mode", () => {
-    mockDarkMode.current = "light";
+    changeDarkMode("light");
     const { getByText } = render(<TestComponent />);
     expect(getByText("Test")).toHaveStyle({ color: "#000" });
   });
 
   test("Expect dark mode styling to apply with dark mode", () => {
-    mockDarkMode.current = "dark";
+    changeDarkMode("dark");
     const { getByText } = render(<TestComponent />);
     expect(getByText("Test")).toHaveStyle({ color: "#FFF" });
   });
 
   test("Expect dark mode toggle to change styling", () => {
-    mockDarkMode.current = "dark";
-    const { getByText, rerender } = render(<TestComponent />);
+    changeDarkMode("dark");
+    const { getByText } = render(<TestComponent />);
     expect(getByText("Test")).toHaveStyle({ color: "#FFF" });
-    mockDarkMode.current = "light";
-    rerender(<TestComponent />);
+    changeDarkMode("light");
     expect(getByText("Test")).toHaveStyle({ color: "#000" });
   });
 });

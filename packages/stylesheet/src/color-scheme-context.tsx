@@ -14,7 +14,9 @@ import { Mode } from "./types";
  * @see https://github.com/oceanbit/seaside-docs/issues/5#issuecomment-1101277049
  */
 export const useColorScheme = () => {
-  const [scheme, setScheme] = useState<"light" | "dark" | null>(null);
+  const [scheme, setScheme] = useState<"light" | "dark" | null>(
+    Appearance.getColorScheme() || null
+  );
 
   useEffect(() => {
     const listener = Appearance.addChangeListener((matches) => {

@@ -1,19 +1,35 @@
 import { createDarkModeValue, useDarkModeValue } from "../dynamic-value";
 import { Text } from "react-native";
-import { render } from "@testing-library/react-native";
+import { act, render } from "@testing-library/react-native";
 import { ColorSchemeProvider } from "../color-scheme-context";
 
-let mockDarkMode = { current: "light" };
+let mockCurrentMode: { current: "light" | "dark" | null } = { current: null };
+type ChangeListenerFn = (p: { colorScheme: "light" | "dark" }) => void;
+let mockFunctions = [] as ChangeListenerFn[];
+const changeDarkMode = (mode: "light" | "dark") => {
+  mockCurrentMode.current = mode;
+  act(() => mockFunctions.forEach((fn) => fn({ colorScheme: mode })));
+};
 beforeAll(() => {
-  jest.mock("react-native/Libraries/Utilities/useColorScheme", () => {
+  jest.mock("react-native/Libraries/Utilities/Appearance", () => {
     return {
-      default: () => mockDarkMode.current,
+      addChangeListener(fn: ChangeListenerFn) {
+        mockFunctions.push(fn);
+        return {
+          remove() {
+            mockFunctions = mockFunctions.filter((f) => f !== fn);
+          },
+        };
+      },
+      getColorScheme() {
+        return mockCurrentMode.current;
+      },
     };
   });
 });
 
 afterAll(() => {
-  jest.unmock("react-native/Libraries/Utilities/useColorScheme");
+  jest.unmock("react-native/Libraries/Utilities/Appearance");
 });
 
 const TestComponent = () => {
@@ -43,25 +59,25 @@ describe("Dynamic value", function () {
   });
 
   test("Expect dark mode when device is dark", () => {
-    mockDarkMode.current = "dark";
+    changeDarkMode("dark");
     const { getByText } = render(<TestComponent />);
     expect(getByText("dark")).toBeTruthy();
   });
 
   test("Expect light mode when device is light", () => {
-    mockDarkMode.current = "light";
+    changeDarkMode("light");
     const { getByText } = render(<TestComponent />);
     expect(getByText("light")).toBeTruthy();
   });
 
   test("Expect light mode when device is dark but context is light", () => {
-    mockDarkMode.current = "dark";
+    changeDarkMode("dark");
     const { getByText } = render(<TestComponentWithContext mode={"light"} />);
     expect(getByText("light")).toBeTruthy();
   });
 
   test("Expect dark mode when device is light but context is dark", () => {
-    mockDarkMode.current = "light";
+    changeDarkMode("light");
     const { getByText } = render(<TestComponentWithContext mode={"dark"} />);
     expect(getByText("dark")).toBeTruthy();
   });
