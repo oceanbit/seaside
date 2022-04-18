@@ -1,7 +1,9 @@
-import { useColorSchemeContext } from "./context";
+import { useColorSchemeContext } from "./color-scheme-context";
+import { Mode } from "./types";
 
 interface IDynamicValueProps {
   isDark: boolean;
+  mode: Mode;
 }
 
 // Move this to a function so that when we introduce responsive functions, we can simply pass everything
@@ -16,5 +18,5 @@ export const createDarkModeValue = <T>(light: T, dark: T): IDynamicValue<T> => {
 
 export function useDarkModeValue<T>(dynamic: IDynamicValue<T>) {
   const mode = useColorSchemeContext();
-  return dynamic({ isDark: mode === "dark" });
+  return dynamic({ isDark: mode === "dark", mode });
 }

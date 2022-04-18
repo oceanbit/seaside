@@ -7,14 +7,15 @@ type ContextType = ReturnType<typeof useColorScheme>;
 export const ColorSchemeContext = createContext<ContextType>(null);
 ColorSchemeContext.displayName = "ColorSchemeContext";
 
-export const DarkModeContext = ColorSchemeContext;
-
-interface IProps {
+interface ColorSchemeProviderProps {
   mode?: Mode;
   children: ReactNode;
 }
 
-export function ColorSchemeProvider({ children, mode }: IProps) {
+export function ColorSchemeProvider({
+  children,
+  mode,
+}: ColorSchemeProviderProps) {
   const currentMode = useColorScheme();
   return (
     <ColorSchemeContext.Provider value={mode || currentMode || "light"}>
@@ -22,8 +23,6 @@ export function ColorSchemeProvider({ children, mode }: IProps) {
     </ColorSchemeContext.Provider>
   );
 }
-
-export const DarkModeProvider = ColorSchemeProvider;
 
 export function useColorSchemeContext(): Mode {
   const context = useContext(ColorSchemeContext);
@@ -34,5 +33,3 @@ export function useColorSchemeContext(): Mode {
 
   return explicitColorScheme || "light";
 }
-
-export const useDarkModeContext = useColorSchemeContext;

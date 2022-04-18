@@ -1,8 +1,9 @@
-import { ViewStyle, TextStyle, ImageStyle } from "react-native";
+import { ViewStyle, TextStyle, ImageStyle, StyleSheet } from "react-native";
 
 import { IDynamicValue } from "./dynamic-value";
-import { IndexedObject, Mode, ValueOf } from "./types";
-import { useColorSchemeContext } from "./context";
+import { IndexedObject, Mode, SimpleRecord, ValueOf } from "./types";
+import { useColorSchemeContext } from "./color-scheme-context";
+import { useTheme } from "./theme-context";
 
 declare const process: {
   env: {
@@ -26,9 +27,13 @@ export type DynamicViewStyle = DynamicStyle<ViewStyle>;
 export type DynamicTextStyle = DynamicStyle<TextStyle>;
 export type DynamicImageStyle = DynamicStyle<ImageStyle>;
 
+interface ParseStylesForProps {
+  mode: Mode;
+}
+
 function parseStylesFor<T extends DynamicStyles<T>>(
   styles: T,
-  mode: Mode
+  props: ParseStylesForProps
 ): NormalizeStyles<T> {
   const newStyles: IndexedObject<IndexedObject<ValueOf<ValueOf<T>>>> = {};
 
@@ -45,7 +50,7 @@ function parseStylesFor<T extends DynamicStyles<T>>(
         v instanceof Function;
       if (isValDynamic(value)) {
         containsDynamicValues = true;
-        newStyle[i] = value({ isDark: mode === "dark" });
+        newStyle[i] = value({ isDark: props.mode === "dark", ...props });
       } else {
         newStyle[i] = value as Value;
       }
@@ -80,8 +85,13 @@ export class DynamicStyleSheet<
     this.__fn = stylesFn;
   }
 
-  getStyleFor(mode: "light" | "dark"): NormalizeStyles<ReturnType<Fn>> {
-    return parseStylesFor(this.__fn({ mode, theme: {} }), mode);
+  getStyleFor(
+    mode: "light" | "dark",
+    theme: SimpleRecord
+  ): NormalizeStyles<ReturnType<Fn>> {
+    return StyleSheet.create(
+      parseStylesFor(this.__fn({ mode, theme }), { mode })
+    );
   }
 }
 
@@ -89,5 +99,6 @@ export const useDynamicStyleSheet = <Fn extends DynamicStyleSheetFn<any>>(
   styleSheet: DynamicStyleSheet<Fn>
 ) => {
   const mode = useColorSchemeContext();
-  return styleSheet.getStyleFor(mode);
+  const theme = useTheme();
+  return styleSheet.getStyleFor(mode, theme);
 };
