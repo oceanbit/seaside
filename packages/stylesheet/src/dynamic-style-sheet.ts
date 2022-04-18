@@ -1,7 +1,7 @@
 import { ViewStyle, TextStyle, ImageStyle, StyleSheet } from "react-native";
 
 import { IDynamicValue } from "./dynamic-value";
-import { IndexedObject, Mode, SimpleRecord, ValueOf } from "./types";
+import { IndexedObject, Mode, ValueOf } from "./types";
 import { useColorSchemeContext } from "./color-scheme-context";
 import { useTheme } from "./theme-context";
 
@@ -67,17 +67,22 @@ function parseStylesFor<T extends DynamicStyles<T>>(
   return newStyles as unknown as NormalizeStyles<T>;
 }
 
-interface DynamicStyleSheetFnProps {
+interface DynamicStyleSheetFnProps<Theme> {
   mode: Mode;
-  theme: object;
+  theme: Theme;
 }
 
-type DynamicStyleSheetFn<T extends DynamicStyles<any>> = (
-  props?: DynamicStyleSheetFnProps
+type DynamicStyleSheetFn<Theme, T extends DynamicStyles<any>> = (
+  props: DynamicStyleSheetFnProps<Theme>
 ) => T;
 
 export class DynamicStyleSheet<
-  Fn extends DynamicStyleSheetFn<any> = DynamicStyleSheetFn<any>
+  Theme,
+  Style extends DynamicStyles<any> = DynamicStyles<any>,
+  Fn extends DynamicStyleSheetFn<Theme, Style> = DynamicStyleSheetFn<
+    Theme,
+    Style
+  >
 > {
   public readonly __fn: Fn;
 
@@ -85,20 +90,22 @@ export class DynamicStyleSheet<
     this.__fn = stylesFn;
   }
 
-  getStyleFor(
-    mode: "light" | "dark",
-    theme: SimpleRecord
-  ): NormalizeStyles<ReturnType<Fn>> {
+  getStyleFor(mode: "light" | "dark", theme: Theme): NormalizeStyles<Style> {
     return StyleSheet.create(
-      parseStylesFor(this.__fn({ mode, theme }), { mode })
-    );
+      parseStylesFor<Style>(this.__fn({ mode, theme }), {
+        mode,
+      }) as NormalizeStyles<Style>
+    ) as never;
   }
 }
 
-export const useDynamicStyleSheet = <Fn extends DynamicStyleSheetFn<any>>(
-  styleSheet: DynamicStyleSheet<Fn>
-) => {
+export const useDynamicStyleSheet = <
+  Style extends DynamicStyles<any>,
+  D extends DynamicStyleSheet<any, Style>
+>(
+  styleSheet: D
+): NormalizeStyles<Style> => {
   const mode = useColorSchemeContext();
   const theme = useTheme();
-  return styleSheet.getStyleFor(mode, theme);
+  return styleSheet.getStyleFor(mode, theme) as never;
 };

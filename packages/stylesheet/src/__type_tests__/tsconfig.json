@@ -8,6 +8,7 @@
     "lib": ["dom", "es2020"],
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "types": ["jest"]
+    "types": ["jest"],
+    "strict": true
   }
 }
