@@ -1,4 +1,4 @@
-import { expectType } from "tsd-lite";
+import { expectError, expectType } from "tsd-lite";
 
 import {
   DynamicStyleSheet,
@@ -13,20 +13,24 @@ const baseTheme = {
   },
 };
 
-const dynamicStyles = new DynamicStyleSheet<typeof baseTheme>(({ theme }) => ({
-  switchBox: {
-    paddingHorizontal: theme.spacing.xxs,
-    paddingVertical: theme.spacing.s,
-    ...Platform.select({
-      web: {
-        cursor: "pointer",
+const dynamicStyles = new DynamicStyleSheet<typeof baseTheme>(
+  ({ theme }) =>
+    ({
+      switchBox: {
+        paddingHorizontal: theme.spacing.xxs,
+        paddingVertical: theme.spacing.s,
+        ...Platform.select({
+          web: {
+            cursor: "pointer",
+          },
+        }),
       },
-    }),
-  },
-}));
+    } as const)
+);
 
 const Comp = () => {
   const styles = useDynamicStyleSheet(dynamicStyles);
-  expectType<string | number | undefined>(styles.switchBox.paddingHorizontal);
+  expectType<number>(styles.switchBox.paddingHorizontal);
+  expectError(styles.test.paddingHorizontal);
   return <View style={styles.switchBox}></View>;
 };

@@ -1,5 +1,4 @@
 import { Animated, Platform } from "react-native";
-import { theme } from "../constants/theme";
 import {
   DynamicStyleSheet,
   useDarkModeValue,
@@ -9,6 +8,7 @@ import { colors } from "@seaside/tokens/colors";
 import { AccessiblePressable } from "../accessible-pressable";
 import { WebStyle } from "../types/shared";
 import { useEffect, useState } from "react";
+import { Theme } from "../provider/theme-provider";
 
 export interface SeaSwitchProps {
   enabled: boolean;
@@ -142,8 +142,8 @@ export const SwitchWatchedAttributes = [
   "label",
 ] as Array<keyof SeaSwitchProps>;
 
-const dynamicStyles = new DynamicStyleSheet(
-  () =>
+const dynamicStyles = new DynamicStyleSheet<Theme>(
+  ({ theme, mode }) =>
     ({
       switchBox: {
         paddingHorizontal: theme.spacing.xxs,
