@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch } from "./switch";
+import { StorybookProvider } from "../storybook-provider";
 
 const SeaSwitchDemo = ({ ...props }: any) => {
   const [value, setValue] = React.useState(false);
@@ -9,7 +10,9 @@ const SeaSwitchDemo = ({ ...props }: any) => {
 export default { title: "Seaside Components/Switch" };
 
 export const DefaultStyling = (args: { disabled: boolean }) => (
-  <SeaSwitchDemo {...args} />
+  <StorybookProvider>
+    <SeaSwitchDemo {...args} />
+  </StorybookProvider>
 );
 
 DefaultStyling.args = { disabled: false };
