@@ -2,6 +2,7 @@ import { expectError, expectType } from "tsd-lite";
 
 import {
   DynamicStyleSheet,
+  SheetProps,
   useDynamicStyleSheet,
 } from "../dynamic-style-sheet";
 import { Platform, View } from "react-native";
@@ -13,8 +14,8 @@ const baseTheme = {
   },
 };
 
-const dynamicStyles = new DynamicStyleSheet<typeof baseTheme>(
-  ({ theme }) =>
+const dynamicStyles = new DynamicStyleSheet(
+  ({ theme }: SheetProps<typeof baseTheme>) =>
     ({
       switchBox: {
         paddingHorizontal: theme.spacing.xxs,

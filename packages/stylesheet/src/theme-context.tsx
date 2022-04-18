@@ -21,7 +21,7 @@ export function ThemeProvider<T extends SimpleRecord>({
   );
 }
 
-export function useTheme(): SimpleRecord {
+export function useTheme() {
   const context = useContext(ThemeContext);
 
   return context.theme;
