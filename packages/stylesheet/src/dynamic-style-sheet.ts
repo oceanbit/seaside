@@ -3,7 +3,7 @@ import { ViewStyle, TextStyle, ImageStyle, StyleSheet } from "react-native";
 import { IDynamicValue } from "./dynamic-value";
 import { IndexedObject, Mode, ValueOf } from "./types";
 import { useColorSchemeContext } from "./color-scheme-context";
-import { useTheme } from "./theme-context";
+import { ThemeRecord, useTheme } from "./theme-context";
 
 declare const process: {
   env: {
@@ -16,7 +16,7 @@ type Style = ViewStyle | TextStyle | ImageStyle;
 type DynamicStyle<T extends Style> = {
   [Key in keyof T]: T[Key] | IDynamicValue<T[Key]>;
 };
-type DynamicStyles<T> = { [P in keyof T]: DynamicStyle<Style> };
+export type DynamicStyles<T> = { [P in keyof T]: DynamicStyle<Style> };
 
 type NormalizeStyle<T> = T extends DynamicStyle<infer R> ? R : T;
 export type NormalizeStyles<T extends DynamicStyles<T>> = {
@@ -27,7 +27,7 @@ export type DynamicViewStyle = DynamicStyle<ViewStyle>;
 export type DynamicTextStyle = DynamicStyle<TextStyle>;
 export type DynamicImageStyle = DynamicStyle<ImageStyle>;
 
-interface ParseStylesForProps {
+export interface ParseStylesForProps {
   mode: Mode;
 }
 
@@ -58,12 +58,6 @@ function parseStylesFor<T extends DynamicStyles<T>>(
     newStyles[i] = newStyle;
   }
 
-  if (!containsDynamicValues && process.env.NODE_ENV !== "production") {
-    console.warn(
-      "A DynamicStyleSheet was used without any DynamicValues. Consider replacing with a regular StyleSheet."
-    );
-  }
-
   return newStyles as unknown as NormalizeStyles<T>;
 }
 
@@ -72,7 +66,7 @@ export interface SheetProps<Theme> {
   theme: Theme;
 }
 
-type DynamicStyleSheetFn<Theme, T extends DynamicStyles<any>> = (
+export type DynamicStyleSheetFn<Theme, T extends DynamicStyles<any>> = (
   props: SheetProps<Theme>
 ) => T;
 
@@ -95,10 +89,19 @@ export class DynamicStyleSheet<
   }
 }
 
+export interface UseDynamicStyleSheetOverwrites {
+  mode?: Mode;
+  theme?: ThemeRecord;
+}
+
 export const useDynamicStyleSheet = <D extends DynamicStyleSheet<never, any>>(
-  styleSheet: D
+  styleSheet: D,
+  overwrites?: UseDynamicStyleSheetOverwrites
 ): NormalizeStyles<ReturnType<D["__fn"]>> => {
   const mode = useColorSchemeContext();
-  const theme = useTheme() as never;
-  return styleSheet.getStyleFor(mode, theme);
+  const theme = useTheme();
+  return styleSheet.getStyleFor(
+    overwrites?.mode || mode,
+    (overwrites?.theme || theme) as never
+  );
 };

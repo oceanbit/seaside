@@ -2,6 +2,13 @@ interface Wat {
   [key: string]: Wat & { toString(): string };
 }
 
+function removeCSSVarPrepend(str: String) {
+  if (str.startsWith("var(--") && str.endsWith(")")) {
+    return str.substring("var(--".length, str.length - 1);
+  }
+  return str;
+}
+
 export const createParrotProxy = (obj = {}): Wat => {
   return new Proxy(obj, {
     get: (target, property, receiver) => {
@@ -12,8 +19,8 @@ export const createParrotProxy = (obj = {}): Wat => {
         createParrotProxy(
           new String(
             target instanceof String
-              ? `${target}_${String(property)}`
-              : property
+              ? `var(--${removeCSSVarPrepend(target)}_${String(property)})`
+              : `var(--${String(property)})`
           )
         )
       );
