@@ -179,6 +179,10 @@ module.exports = [
         // Fix the responder system which react-native-web depends on
         "react-dom/unstable-native-dependencies$":
           "preact-responder-event-plugin",
+        "@seaside/stylesheet": path.resolve(
+          __dirname,
+          "./src/seaside-stylesheet"
+        ),
       },
     },
     output: {

@@ -1,4 +1,4 @@
-interface Wat {
+export interface Wat {
   [key: string]: Wat & { toString(): string };
 }
 

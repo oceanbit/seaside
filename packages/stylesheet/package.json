@@ -1,7 +1,8 @@
 {
   "name": "@seaside/stylesheet",
   "version": "0.0.0",
-  "main": "./dist/index.js",
+  "main": "./dist-cjs/index.js",
+  "module": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "description": "Stylesheets that support media queries, context passing, and more.",
   "license": "MIT",
@@ -11,7 +12,9 @@
     "test": "yarn test:logic && yarn test:types",
     "test:logic": "jest",
     "test:types": "jest -c jest.config.tsd.js",
-    "build": "tsc",
+    "build": "yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
     "watch": "yarn run build --watch"
   },
   "peerDependencies": {
