@@ -2,10 +2,15 @@
   "name": "@seaside/monorepo-root",
   "version": "0.2.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@vue/cli-plugin-eslint", "**/@vue/cli-plugin-eslint/**"
+    ]
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
