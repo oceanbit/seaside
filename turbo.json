@@ -6,7 +6,8 @@
       ],
       "outputs": [
         "dist/**",
-        "build/**"
+        "build/**",
+        ".parcel-cache/**"
       ]
     },
     "test": {

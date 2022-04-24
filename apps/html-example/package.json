@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "@seaside/html-example",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel index.html"
+  },
+  "dependencies": {
+    "@seaside/components": "*"
+  },
+  "devDependencies": {
+    "parcel": "^2.5.0"
+  }
+}

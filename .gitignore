@@ -40,3 +40,5 @@ yarn-error.log*
 
 # Storybook
 storybook-static/
+
+.parcel-cache/
